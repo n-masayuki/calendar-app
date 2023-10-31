@@ -1,0 +1,256 @@
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap");
+
+.fc {
+  --fc-black: rgb(35, 24, 21);
+  --fc-red: rgb(204, 0, 0);
+  --fc-bg-blue: rgb(13, 60, 101);
+  --fc-bg-red: rgb(255, 204, 188);
+  --fc-bg-red-opacity: rgba(255, 204, 188, 0.3);
+  --fc-shopNameButton-w: 60;
+  // --fc-shopNameButton-w: 78;
+
+  color: var(--fc-black);
+  font-family: "EB Garamond", serif;
+
+  .fc-scrollgrid-sync-table {
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  .fc-toolbar {
+    &.fc-header-toolbar {
+      margin-bottom: 10px;
+      position: relative;
+    }
+  }
+
+  .fc-toolbar-title {
+    font-size: 18px;
+  }
+
+  .fc-button-group {
+    align-items: center;
+  }
+
+  .fc-toolbar-chunk:has(.fc-toolbar-title) {
+    // margin-left: calc((var(--fc-shopNameButton-w) / 335) * 100vw * -1);
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  .fc-button {
+    height: fit-content;
+  }
+
+  .fc-button:not(.fc-shopNameButton-button) {
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .fc-button-primary,
+  .fc-button-primary:hover {
+    background-color: transparent;
+    color: var(--fc-black);
+    border: none;
+  }
+
+  .fc-shopNameButton-button {
+    font-size: 18px;
+    font-weight: 700;
+    background-color: #bebb9b;
+    color: var(--fc-black);
+    border-radius: 0;
+    border: none;
+    width: calc((var(--fc-shopNameButton-w) / 335) * 100vw);
+    // width: 78px;
+    padding-right: 0;
+    padding-left: 0;
+
+    &::first-letter {
+      font-size: 24px;
+    }
+  }
+
+  .fc-scrollgrid-sync-inner {
+    display: flex;
+    place-items: center;
+    flex-direction: column;
+  }
+
+  //   .fc-daygrid-day-top {
+  //     margin: auto;
+  //   }
+
+  .fc-col-header-cell-cushion {
+    margin-inline: auto;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: lowercase;
+  }
+
+  // .fc-day {
+  // }
+
+  .fc-day-sun {
+    color: var(--fc-red);
+  }
+
+  .fc-day-sat {
+    color: #0d3c65;
+  }
+
+  .fc-h-event {
+    background-color: transparent;
+  }
+
+  .fc-daygrid-day {
+    &:has(.temporary-closed) {
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 55%;
+        height: 55%;
+        background-color: var(--fc-bg-red);
+        margin: auto;
+      }
+    }
+  }
+
+  .fc-daygrid-day.fc-day-tue {
+    &:has(.substitute-holiday) {
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 55%;
+        height: 55%;
+        background-color: var(--fc-bg-red);
+        margin: auto;
+      }
+    }
+  }
+
+  .fc-day-sun,
+  .fc-day-mon {
+    &.fc-daygrid-day {
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 60%;
+        height: 60%;
+        background-color: var(--fc-bg-red);
+        margin: auto;
+      }
+
+      // background-color: var(--fc-bg-red);
+      // background-color: var(--fc-bg-red-opacity);
+    }
+
+    // &.fc-day-past {
+    //   background-color: var(--fc-bg-red);
+    // }
+  }
+
+  .fc-day:not(.fc-day-other) .fc-bg-event {
+    opacity: 1;
+  }
+
+  .fc-daygrid-day-number {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+  }
+
+  .fc-event-title {
+    opacity: 0;
+    display: none;
+  }
+
+  .fc-daygrid-day:has(.japanese-holiday) {
+    .fc-daygrid-day-number {
+      color: var(--fc-red);
+    }
+  }
+
+  .fc-daygrid-day:not(.fc-day-sun):not(.fc-day-mon):has(.japanese-holiday) {
+    &::before {
+      display: none;
+    }
+  }
+
+  .fc-toolbar {
+    &.fc-footer-toolbar {
+      margin-top: 10px;
+    }
+  }
+
+  .fc-toolbar-chunk:has(.fc-noteButton-button) {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+
+    &::before {
+      content: "";
+      display: block;
+      width: calc((20 / 335) * 100vw);
+      height: auto;
+      aspect-ratio: 1/1;
+      background-color: var(--fc-bg-red);
+    }
+  }
+
+  .fc-noteButton-button {
+    position: relative;
+    font-size: 10px;
+    font-family: sans-serif;
+  }
+
+  .fc-prevMonth-button,
+  .fc-nextMonth-button,
+  .fc-shopNameButton-button,
+  .fc-noteButton-button {
+    pointer-events: none;
+    box-shadow: none;
+    cursor: none;
+  }
+}
+// .fc
+
+.fc-direction-ltr,
+.fc-direction-rtl {
+  .fc-daygrid-event {
+    &.fc-event-start,
+    &.fc-event-end {
+      margin: 0;
+      border: none;
+    }
+  }
+}
