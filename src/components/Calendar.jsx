@@ -169,60 +169,147 @@ const Calendar = () => {
 
   return (
     <>
-      <div>
-        <button onClick={handlePrevMonthClick}>
-          ＜{" "}
-          {new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() - 1,
-            1
-          ).toLocaleDateString("en-US", { month: "long" })}
-        </button>
-        <span>
-          {new Date(currentDate).toLocaleDateString("en-US", {
-            month: "long",
-            year: "numeric",
-          })}
-        </span>
-        <button onClick={handleNextMonthClick}>
-          {new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() + 1,
-            1
-          ).toLocaleDateString("en-US", { month: "long" })}{" "}
-          ＞
-        </button>
-      </div>
+      <div className="c-calendar">
+        <div className="c-calendar-item">
+          <div className="c-calendar-header">
+            <button
+              className="c-calendar-header-btn c-calendar-header-prev-btn"
+              onClick={handlePrevMonthClick}
+            >
+              <span class="c-calendar-icon material-symbols-outlined">
+                chevron_left
+              </span>{" "}
+              {new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth() - 1,
+                1
+              ).toLocaleDateString("en-US", { month: "long" })}
+            </button>
+            <h2 class="c-calendar-header-month c-calendar-header-month--current">
+              <span>
+                {new Date(currentDate).toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                })}
+              </span>
+            </h2>
+            <button
+              className="c-calendar-header-btn c-calendar-header-next-btn"
+              onClick={handleNextMonthClick}
+            >
+              {new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth() + 1,
+                1
+              ).toLocaleDateString("en-US", { month: "long" })}{" "}
+              <span class="c-calendar-icon material-symbols-outlined">
+                chevron_right
+              </span>
+            </button>
+          </div>
 
-      <FullCalendar
-        ref={calendarRef}
-        plugins={[dayGridPlugin, googleCalendarPlugin]}
-        initialView="dayGridMonth"
-        events={events}
-        // headerToolbar={{
-        //   left: "shopNameButton,prev",
-        //   center: "title",
-        //   right: "next",
-        // }}
-        footerToolbar={{
-          right: "noteButton",
-        }}
-        // titleFormat={{
-        //   year: "numeric",
-        //   month: "long",
-        // }}
-        customButtons={{
-          // shopNameButton: {
-          //   text: "BAR",
-          // },
-          noteButton: {
-            text: "定休・臨時休業日",
-          },
-        }}
-        datesSet={(info) => {
-          setCurrentDate(info.view.currentStart);
-        }}
-      />
+          <FullCalendar
+            ref={calendarRef}
+            plugins={[dayGridPlugin, googleCalendarPlugin]}
+            initialView="dayGridMonth"
+            events={events}
+            headerToolbar={false}
+            // headerToolbar={{
+            //   left: "shopNameButton,prev",
+            //   center: "title",
+            //   right: "next",
+            // }}
+            footerToolbar={{
+              right: "noteButton",
+            }}
+            // titleFormat={{
+            //   year: "numeric",
+            //   month: "long",
+            // }}
+            customButtons={{
+              // shopNameButton: {
+              //   text: "BAR",
+              // },
+              noteButton: {
+                text: "定休・臨時休業日",
+              },
+            }}
+            datesSet={(info) => {
+              setCurrentDate(info.view.currentStart);
+            }}
+          />
+        </div>
+
+        <div className="c-calendar-item">
+          <div className="c-calendar-header">
+            <button
+              className="c-calendar-header-btn c-calendar-header-prev-btn"
+              onClick={handlePrevMonthClick}
+            >
+              <span class="c-calendar-icon material-symbols-outlined">
+                chevron_left
+              </span>{" "}
+              {new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth() - 1,
+                1
+              ).toLocaleDateString("en-US", { month: "long" })}
+            </button>
+            <h2 class="c-calendar-header-month c-calendar-header-month--current">
+              <span>
+                {new Date(currentDate).toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                })}
+              </span>
+            </h2>
+            <button
+              className="c-calendar-header-btn c-calendar-header-next-btn"
+              onClick={handleNextMonthClick}
+            >
+              {new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth() + 1,
+                1
+              ).toLocaleDateString("en-US", { month: "long" })}{" "}
+              <span class="c-calendar-icon material-symbols-outlined">
+                chevron_right
+              </span>
+            </button>
+          </div>
+
+          <FullCalendar
+            ref={calendarRef}
+            plugins={[dayGridPlugin, googleCalendarPlugin]}
+            initialView="dayGridMonth"
+            events={events}
+            headerToolbar={false}
+            // headerToolbar={{
+            //   left: "shopNameButton,prev",
+            //   center: "title",
+            //   right: "next",
+            // }}
+            footerToolbar={{
+              right: "noteButton",
+            }}
+            // titleFormat={{
+            //   year: "numeric",
+            //   month: "long",
+            // }}
+            customButtons={{
+              // shopNameButton: {
+              //   text: "BAR",
+              // },
+              noteButton: {
+                text: "定休・臨時休業日",
+              },
+            }}
+            datesSet={(info) => {
+              setCurrentDate(info.view.currentStart);
+            }}
+          />
+        </div>
+      </div>
     </>
   );
 };

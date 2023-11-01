@@ -1,4 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
 
 .fc {
   --fc-black: rgb(35, 24, 21);
@@ -9,6 +14,7 @@
   --fc-shopNameButton-w: 60;
   // --fc-shopNameButton-w: 78;
 
+  margin-top: 10px;
   color: var(--fc-black);
   font-family: "EB Garamond", serif;
 
@@ -17,32 +23,32 @@
     line-height: 1;
   }
 
-  .fc-toolbar {
-    &.fc-header-toolbar {
-      margin-bottom: 10px;
-      position: relative;
-    }
-  }
+  // .fc-toolbar {
+  //   &.fc-header-toolbar {
+  //     margin-bottom: 10px;
+  //     position: relative;
+  //   }
+  // }
 
-  .fc-toolbar-title {
-    font-size: 18px;
-  }
+  // .fc-toolbar-title {
+  //   font-size: 18px;
+  // }
 
   .fc-button-group {
     align-items: center;
   }
 
-  .fc-toolbar-chunk:has(.fc-toolbar-title) {
-    // margin-left: calc((var(--fc-shopNameButton-w) / 335) * 100vw * -1);
-    margin: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: fit-content;
-    height: fit-content;
-  }
+  // .fc-toolbar-chunk:has(.fc-toolbar-title) {
+  //   // margin-left: calc((var(--fc-shopNameButton-w) / 335) * 100vw * -1);
+  //   margin: auto;
+  //   position: absolute;
+  //   top: 0;
+  //   bottom: 0;
+  //   left: 0;
+  //   right: 0;
+  //   width: fit-content;
+  //   height: fit-content;
+  // }
 
   .fc-button {
     height: fit-content;
@@ -212,20 +218,20 @@
     }
   }
 
-  .fc-toolbar-chunk:has(.fc-noteButton-button) {
-    display: flex;
-    align-items: center;
-    column-gap: 5px;
+  // .fc-toolbar-chunk:has(.fc-noteButton-button) {
+  //   display: flex;
+  //   align-items: center;
+  //   column-gap: 5px;
 
-    &::before {
-      content: "";
-      display: block;
-      width: calc((20 / 335) * 100vw);
-      height: auto;
-      aspect-ratio: 1/1;
-      background-color: var(--fc-bg-red);
-    }
-  }
+  //   &::before {
+  //     content: "";
+  //     display: block;
+  //     width: calc((20 / 335) * 100vw);
+  //     height: auto;
+  //     aspect-ratio: 1/1;
+  //     background-color: var(--fc-bg-red);
+  //   }
+  // }
 
   .fc-noteButton-button {
     position: relative;
@@ -233,9 +239,9 @@
     font-family: sans-serif;
   }
 
-  .fc-prevMonth-button,
-  .fc-nextMonth-button,
-  .fc-shopNameButton-button,
+  // .fc-prevMonth-button,
+  // .fc-nextMonth-button,
+  // .fc-shopNameButton-button,
   .fc-noteButton-button {
     pointer-events: none;
     box-shadow: none;
@@ -254,3 +260,75 @@
     }
   }
 }
+
+:root {
+  --font-family-base: "EB Garamond", serif;
+}
+
+.c-calendar {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 20px;
+
+  &-item {
+    min-width: 360px;
+  }
+
+  &-header {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-family-base);
+
+    &-month {
+      text-align: center;
+
+      &--current {
+        margin: auto;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: fit-content;
+        height: fit-content;
+        font-size: 18px;
+      }
+    }
+    // &-month
+
+    &-btn {
+      font-family: var(--font-family-base);
+      font-size: 16px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+    }
+
+    // &-prev-btn,
+    // &-next-btn {
+    // }
+
+    &-prev-btn {
+      text-align: left;
+    }
+
+    &-next-btn {
+      text-align: right;
+    }
+  }
+  // &-header
+
+  // &-icon {
+  // }
+  // // &-icon
+}
+// .c-calendar
