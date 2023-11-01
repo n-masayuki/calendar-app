@@ -142,6 +142,20 @@
 .fc .fc-toolbar.fc-footer-toolbar {
   margin-top: 10px;
 }
+.fc .fc-toolbar-chunk:has(.fc-noteButton-button) {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+}
+.fc .fc-toolbar-chunk:has(.fc-noteButton-button)::before {
+  content: "";
+  display: block;
+  width: 5.9701492537vw;
+  max-width: 23px;
+  height: auto;
+  aspect-ratio: 1/1;
+  background-color: var(--fc-bg-red);
+}
 .fc .fc-noteButton-button {
   position: relative;
   font-size: 10px;
@@ -166,12 +180,28 @@
 
 .c-calendar {
   position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 20px;
+  max-width: 800px;
 }
-.c-calendar-item {
-  min-width: 360px;
+@media (min-width: 840px) {
+  .c-calendar {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+@media (min-width: 840px) {
+  .c-calendar {
+    display: grid;
+    column-gap: 20px;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.c-calendar-item + .c-calendar-item {
+  margin-top: 40px;
+}
+@media (min-width: 840px) {
+  .c-calendar-item + .c-calendar-item {
+    margin-top: 0;
+  }
 }
 .c-calendar-header {
   position: relative;

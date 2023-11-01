@@ -214,22 +214,10 @@ const Calendar = () => {
             initialView="dayGridMonth"
             events={events}
             headerToolbar={false}
-            // headerToolbar={{
-            //   left: "shopNameButton,prev",
-            //   center: "title",
-            //   right: "next",
-            // }}
             footerToolbar={{
               right: "noteButton",
             }}
-            // titleFormat={{
-            //   year: "numeric",
-            //   month: "long",
-            // }}
             customButtons={{
-              // shopNameButton: {
-              //   text: "BAR",
-              // },
               noteButton: {
                 text: "定休・臨時休業日",
               },
@@ -284,22 +272,10 @@ const Calendar = () => {
             initialView="dayGridMonth"
             events={events}
             headerToolbar={false}
-            // headerToolbar={{
-            //   left: "shopNameButton,prev",
-            //   center: "title",
-            //   right: "next",
-            // }}
             footerToolbar={{
               right: "noteButton",
             }}
-            // titleFormat={{
-            //   year: "numeric",
-            //   month: "long",
-            // }}
             customButtons={{
-              // shopNameButton: {
-              //   text: "BAR",
-              // },
               noteButton: {
                 text: "定休・臨時休業日",
               },

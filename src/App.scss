@@ -218,20 +218,21 @@
     }
   }
 
-  // .fc-toolbar-chunk:has(.fc-noteButton-button) {
-  //   display: flex;
-  //   align-items: center;
-  //   column-gap: 5px;
+  .fc-toolbar-chunk:has(.fc-noteButton-button) {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
 
-  //   &::before {
-  //     content: "";
-  //     display: block;
-  //     width: calc((20 / 335) * 100vw);
-  //     height: auto;
-  //     aspect-ratio: 1/1;
-  //     background-color: var(--fc-bg-red);
-  //   }
-  // }
+    &::before {
+      content: "";
+      display: block;
+      width: calc((20 / 335) * 100vw);
+      max-width: 23px;
+      height: auto;
+      aspect-ratio: 1/1;
+      background-color: var(--fc-bg-red);
+    }
+  }
 
   .fc-noteButton-button {
     position: relative;
@@ -267,12 +268,27 @@
 
 .c-calendar {
   position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 20px;
+  max-width: 800px;
+
+  @media (min-width: 840px) {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  @media (min-width: 840px) {
+    display: grid;
+    column-gap: 20px;
+    grid-template-columns: 1fr 1fr;
+  }
 
   &-item {
-    min-width: 360px;
+    + .c-calendar-item {
+      margin-top: 40px;
+
+      @media (min-width: 840px) {
+        margin-top: 0;
+      }
+    }
   }
 
   &-header {
