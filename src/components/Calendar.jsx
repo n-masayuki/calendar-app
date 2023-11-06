@@ -4,38 +4,13 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 
 const Calendar = () => {
-  const [events, setEvents] = useState([]);
-  const calendarRef = useRef(null);
-  const [currentDate, setCurrentDate] = useState(new Date());
-  // const today = useMemo(() => new Date(), []);
-
-  // // 今月の最初の日を取得
-  // const firstDayOfCurrentMonth = useMemo(
-  //   () => new Date(today.getFullYear(), today.getMonth(), 1),
-  //   [today]
-  // );
-
-  // // 前の月の日付を計算
-  // const prevMonth = useMemo(() => {
-  //   const prevMonthDate = new Date(
-  //     today.getFullYear(),
-  //     today.getMonth() - 1,
-  //     1
-  //   );
-  //   const options = { month: "2-digit" };
-  //   return prevMonthDate.toLocaleDateString("en-US", options);
-  // }, [today]);
-
-  // // 次の月の日付を計算
-  // const nextMonth = useMemo(() => {
-  //   const nextMonthDate = new Date(
-  //     today.getFullYear(),
-  //     today.getMonth() + 1,
-  //     1
-  //   );
-  //   const options = { month: "2-digit" };
-  //   return nextMonthDate.toLocaleDateString("en-US", options);
-  // }, [today]);
+  // const [events, setEvents] = useState([]);
+  const [cafeEvents, setCafeEvents] = useState([]);
+  const [barEvents, setBarEvents] = useState([]);
+  const calendarRef1 = useRef(null);
+  const calendarRef2 = useRef(null);
+  const [currentDate1, setCurrentDate1] = useState(new Date());
+  const [currentDate2, setCurrentDate2] = useState(new Date());
 
   useEffect(() => {
     const fetchGoogleCalendarEvents = async () => {
@@ -64,6 +39,16 @@ const Calendar = () => {
           end: event.end.dateTime || event.end.date,
           classNames: "temporary-closed", // クラスを追加
         }));
+
+        // GoogleカレンダーのイベントをCafeとBarに分ける
+        const cafeEvents = googleCalendarEvents.filter(
+          (event) => event.title.toLowerCase().includes("cafe") // 大文字小文字を区別しない
+          // event.title.includes("Cafe")
+        );
+        const barEvents = googleCalendarEvents.filter(
+          (event) => event.title.toLowerCase().includes("bar") // 大文字小文字を区別しない
+          // event.title.includes("Bar")
+        );
 
         // JavaScriptで指定した定休日を作成
         const recurringHolidays = [];
@@ -122,45 +107,42 @@ const Calendar = () => {
           })
           .flat();
 
-        // japaneseHolidaysをカレンダーのイベントに追加
+        // eslint-disable-next-line no-unused-vars
         const allEvents = [
-          ...googleCalendarEvents,
+          // ...googleCalendarEvents,
+          ...cafeEvents,
+          ...barEvents,
           ...recurringHolidays,
           ...japaneseHolidays,
         ];
 
-        setEvents(allEvents);
+        // setEvents(allEvents);
+        // setCafeEvents と setBarEvents でそれぞれのイベントをセット
+        setCafeEvents(cafeEvents);
+        setBarEvents(barEvents);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchGoogleCalendarEvents();
-  }, []);
+  }, []); // 初回のみ実行
 
-  // const handleCalendarPrevNextClick = (info) => {
-  //   const newDate = info.view.currentStart;
-  //   const options = { year: "numeric", month: "long" };
-  //   const newMonth = newDate.toLocaleDateString("en-US", options);
-  //   // ここで新しい月をセットするか、APIを呼び出して新しいイベントを取得するなどの処理を行います。
-
-  //   console.log("新しい月:", newMonth);
-  // };
-
-  const handlePrevMonthClick = () => {
+  // 月の変更時にカレンダーコンポーネントを操作
+  const handlePrevMonthClick = (calendarRef, setCurrentDate) => {
     const newDate = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() - 1,
+      calendarRef.current.getApi().getDate().getFullYear(),
+      calendarRef.current.getApi().getDate().getMonth() - 1,
       1
     );
     setCurrentDate(newDate);
     calendarRef.current.getApi().gotoDate(newDate);
   };
 
-  const handleNextMonthClick = () => {
+  const handleNextMonthClick = (calendarRef, setCurrentDate) => {
     const newDate = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1,
+      calendarRef.current.getApi().getDate().getFullYear(),
+      calendarRef.current.getApi().getDate().getMonth() + 1,
       1
     );
     setCurrentDate(newDate);
@@ -170,24 +152,27 @@ const Calendar = () => {
   return (
     <>
       <div className="c-calendar">
-        <div className="c-calendar-item">
+        <div className="c-calendar-item c-calendar-item--cafe">
+          <p className="c-calendar-shop-type">Cafe</p>
           <div className="c-calendar-header">
             <button
               className="c-calendar-header-btn c-calendar-header-prev-btn"
-              onClick={handlePrevMonthClick}
+              onClick={() =>
+                handlePrevMonthClick(calendarRef1, setCurrentDate1)
+              }
             >
-              <span class="c-calendar-icon material-symbols-outlined">
+              <span className="c-calendar-icon material-symbols-outlined">
                 chevron_left
               </span>{" "}
               {new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth() - 1,
+                currentDate1.getFullYear(),
+                currentDate1.getMonth() - 1,
                 1
               ).toLocaleDateString("en-US", { month: "long" })}
             </button>
-            <h2 class="c-calendar-header-month c-calendar-header-month--current">
+            <h2 className="c-calendar-header-month c-calendar-header-month--current">
               <span>
-                {new Date(currentDate).toLocaleDateString("en-US", {
+                {new Date(currentDate1).toLocaleDateString("en-US", {
                   month: "long",
                   year: "numeric",
                 })}
@@ -195,24 +180,27 @@ const Calendar = () => {
             </h2>
             <button
               className="c-calendar-header-btn c-calendar-header-next-btn"
-              onClick={handleNextMonthClick}
+              onClick={() =>
+                handleNextMonthClick(calendarRef1, setCurrentDate1)
+              }
             >
               {new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth() + 1,
+                currentDate1.getFullYear(),
+                currentDate1.getMonth() + 1,
                 1
               ).toLocaleDateString("en-US", { month: "long" })}{" "}
-              <span class="c-calendar-icon material-symbols-outlined">
+              <span className="c-calendar-icon material-symbols-outlined">
                 chevron_right
               </span>
             </button>
           </div>
 
           <FullCalendar
-            ref={calendarRef}
+            ref={calendarRef1}
+            initialDate={currentDate1}
             plugins={[dayGridPlugin, googleCalendarPlugin]}
             initialView="dayGridMonth"
-            events={events}
+            events={cafeEvents}
             headerToolbar={false}
             footerToolbar={{
               right: "noteButton",
@@ -223,29 +211,32 @@ const Calendar = () => {
               },
             }}
             datesSet={(info) => {
-              setCurrentDate(info.view.currentStart);
+              setCurrentDate1(info.view.currentStart);
             }}
           />
         </div>
 
-        <div className="c-calendar-item">
+        <div className="c-calendar-item c-calendar-item--bar">
+          <p className="c-calendar-shop-type">Bar</p>
           <div className="c-calendar-header">
             <button
               className="c-calendar-header-btn c-calendar-header-prev-btn"
-              onClick={handlePrevMonthClick}
+              onClick={() =>
+                handlePrevMonthClick(calendarRef2, setCurrentDate2)
+              }
             >
-              <span class="c-calendar-icon material-symbols-outlined">
+              <span className="c-calendar-icon material-symbols-outlined">
                 chevron_left
               </span>{" "}
               {new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth() - 1,
+                currentDate2.getFullYear(),
+                currentDate2.getMonth() - 1,
                 1
               ).toLocaleDateString("en-US", { month: "long" })}
             </button>
-            <h2 class="c-calendar-header-month c-calendar-header-month--current">
+            <h2 className="c-calendar-header-month c-calendar-header-month--current">
               <span>
-                {new Date(currentDate).toLocaleDateString("en-US", {
+                {new Date(currentDate2).toLocaleDateString("en-US", {
                   month: "long",
                   year: "numeric",
                 })}
@@ -253,24 +244,27 @@ const Calendar = () => {
             </h2>
             <button
               className="c-calendar-header-btn c-calendar-header-next-btn"
-              onClick={handleNextMonthClick}
+              onClick={() =>
+                handleNextMonthClick(calendarRef2, setCurrentDate2)
+              }
             >
               {new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth() + 1,
+                currentDate2.getFullYear(),
+                currentDate2.getMonth() + 1,
                 1
               ).toLocaleDateString("en-US", { month: "long" })}{" "}
-              <span class="c-calendar-icon material-symbols-outlined">
+              <span className="c-calendar-icon material-symbols-outlined">
                 chevron_right
               </span>
             </button>
           </div>
 
           <FullCalendar
-            ref={calendarRef}
+            ref={calendarRef2}
+            initialDate={currentDate2}
             plugins={[dayGridPlugin, googleCalendarPlugin]}
             initialView="dayGridMonth"
-            events={events}
+            events={barEvents}
             headerToolbar={false}
             footerToolbar={{
               right: "noteButton",
@@ -281,7 +275,7 @@ const Calendar = () => {
               },
             }}
             datesSet={(info) => {
-              setCurrentDate(info.view.currentStart);
+              setCurrentDate2(info.view.currentStart);
             }}
           />
         </div>

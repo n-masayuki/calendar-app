@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+@import url("https://use.typekit.net/tuy5qfe.css");
 
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
@@ -11,7 +12,8 @@
   --fc-bg-blue: rgb(13, 60, 101);
   --fc-bg-red: rgb(255, 204, 188);
   --fc-bg-red-opacity: rgba(255, 204, 188, 0.3);
-  --fc-shopNameButton-w: 60;
+  --fc-today-border-color: rgb(255 220 40);
+  // --fc-shopNameButton-w: 60;
   // --fc-shopNameButton-w: 78;
 
   margin-top: 10px;
@@ -20,6 +22,7 @@
 
   .fc-scrollgrid-sync-table {
     font-size: 15px;
+    font-weight: 700;
     line-height: 1;
   }
 
@@ -54,10 +57,10 @@
     height: fit-content;
   }
 
-  .fc-button:not(.fc-shopNameButton-button) {
-    padding: 0;
-    border-radius: 0;
-  }
+  // .fc-button:not(.fc-shopNameButton-button) {
+  //   padding: 0;
+  //   border-radius: 0;
+  // }
 
   .fc-button-primary,
   .fc-button-primary:hover {
@@ -66,22 +69,22 @@
     border: none;
   }
 
-  .fc-shopNameButton-button {
-    font-size: 18px;
-    font-weight: 700;
-    background-color: #bebb9b;
-    color: var(--fc-black);
-    border-radius: 0;
-    border: none;
-    width: calc((var(--fc-shopNameButton-w) / 335) * 100vw);
-    // width: 78px;
-    padding-right: 0;
-    padding-left: 0;
+  // .fc-shopNameButton-button {
+  //   font-size: 18px;
+  //   font-weight: 700;
+  //   background-color: #bebb9b;
+  //   color: var(--fc-black);
+  //   border-radius: 0;
+  //   border: none;
+  //   width: calc((var(--fc-shopNameButton-w) / 335) * 100vw);
+  //   // width: 78px;
+  //   padding-right: 0;
+  //   padding-left: 0;
 
-    &::first-letter {
-      font-size: 24px;
-    }
-  }
+  //   &::first-letter {
+  //     font-size: 24px;
+  //   }
+  // }
 
   .fc-scrollgrid-sync-inner {
     display: flex;
@@ -153,31 +156,71 @@
     }
   }
 
-  .fc-day-sun,
-  .fc-day-mon {
-    &.fc-daygrid-day {
-      position: relative;
+  // Cafeの定休日：月曜休
+  .c-calendar-item--cafe & {
+    .fc-day-mon {
+      &.fc-daygrid-day {
+        position: relative;
 
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        width: 60%;
-        height: 60%;
-        background-color: var(--fc-bg-red);
-        margin: auto;
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          width: 60%;
+          height: 60%;
+          background-color: var(--fc-bg-red);
+          margin: auto;
+        }
+      }
+    }
+  }
+
+  // Barの定休日：日・月曜休 ※月曜祝日の場合は火曜休
+  .c-calendar-item--bar & {
+    .fc-day-sun,
+    .fc-day-mon {
+      &.fc-daygrid-day {
+        position: relative;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          width: 60%;
+          height: 60%;
+          background-color: var(--fc-bg-red);
+          margin: auto;
+        }
+
+        // background-color: var(--fc-bg-red);
+        // background-color: var(--fc-bg-red-opacity);
       }
 
-      // background-color: var(--fc-bg-red);
-      // background-color: var(--fc-bg-red-opacity);
+      // &.fc-day-past {
+      //   background-color: var(--fc-bg-red);
+      // }
     }
+  }
 
-    // &.fc-day-past {
-    //   background-color: var(--fc-bg-red);
-    // }
+  .fc-day-today {
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: calc(100% + 2px);
+      height: calc(100% + 2px);
+      display: block;
+      border: 1px solid var(--fc-today-border-color);
+    }
   }
 
   .fc-day:not(.fc-day-other) .fc-bg-event {
@@ -263,12 +306,16 @@
 }
 
 :root {
-  --font-family-base: "EB Garamond", serif;
+  --calendar-font-family-base: "EB Garamond", serif;
+  --calendar-shop-color: rgb(35, 24, 21);
+  --calendar-shop-font-family: copperplate-condensed, serif;
+  --calendar-shop-bgcolor: #bebb9b;
 }
 
 .c-calendar {
   position: relative;
   max-width: 800px;
+  color: var(--calendar-shop-color);
 
   @media (min-width: 840px) {
     margin-right: auto;
@@ -277,11 +324,21 @@
 
   @media (min-width: 840px) {
     display: grid;
-    column-gap: 20px;
+    column-gap: 40px;
     grid-template-columns: 1fr 1fr;
   }
 
   &-item {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 500px;
+
+    @media (min-width: 840px) {
+      margin-right: 0;
+      margin-left: 0;
+      max-width: inherit;
+    }
+
     + .c-calendar-item {
       margin-top: 40px;
 
@@ -291,13 +348,26 @@
     }
   }
 
+  &-shop-type {
+    padding: 0.5rem;
+    text-align: center;
+    font-family: var(--calendar-shop-font-family);
+    font-size: 18px;
+    font-weight: 700;
+    background-color: var(--calendar-shop-bgcolor);
+
+    &::first-letter {
+      font-size: 24px;
+    }
+  }
+
   &-header {
     position: relative;
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
-    font-family: var(--font-family-base);
+    font-family: var(--calendar-font-family-base);
 
     &-month {
       text-align: center;
@@ -317,7 +387,7 @@
     // &-month
 
     &-btn {
-      font-family: var(--font-family-base);
+      font-family: var(--calendar-font-family-base);
       font-size: 16px;
       padding: 0;
       display: flex;

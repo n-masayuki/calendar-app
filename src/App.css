@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+@import url("https://use.typekit.net/tuy5qfe.css");
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
@@ -10,13 +11,14 @@
   --fc-bg-blue: rgb(13, 60, 101);
   --fc-bg-red: rgb(255, 204, 188);
   --fc-bg-red-opacity: rgba(255, 204, 188, 0.3);
-  --fc-shopNameButton-w: 60;
+  --fc-today-border-color: rgb(255 220 40);
   margin-top: 10px;
   color: var(--fc-black);
   font-family: "EB Garamond", serif;
 }
 .fc .fc-scrollgrid-sync-table {
   font-size: 15px;
+  font-weight: 700;
   line-height: 1;
 }
 .fc .fc-button-group {
@@ -25,29 +27,11 @@
 .fc .fc-button {
   height: fit-content;
 }
-.fc .fc-button:not(.fc-shopNameButton-button) {
-  padding: 0;
-  border-radius: 0;
-}
 .fc .fc-button-primary,
 .fc .fc-button-primary:hover {
   background-color: transparent;
   color: var(--fc-black);
   border: none;
-}
-.fc .fc-shopNameButton-button {
-  font-size: 18px;
-  font-weight: 700;
-  background-color: #bebb9b;
-  color: var(--fc-black);
-  border-radius: 0;
-  border: none;
-  width: calc(var(--fc-shopNameButton-w) / 335 * 100vw);
-  padding-right: 0;
-  padding-left: 0;
-}
-.fc .fc-shopNameButton-button::first-letter {
-  font-size: 24px;
 }
 .fc .fc-scrollgrid-sync-inner {
   display: flex;
@@ -99,12 +83,10 @@
   background-color: var(--fc-bg-red);
   margin: auto;
 }
-.fc .fc-day-sun.fc-daygrid-day,
-.fc .fc-day-mon.fc-daygrid-day {
+.c-calendar-item--cafe .fc .fc-day-mon.fc-daygrid-day {
   position: relative;
 }
-.fc .fc-day-sun.fc-daygrid-day::before,
-.fc .fc-day-mon.fc-daygrid-day::before {
+.c-calendar-item--cafe .fc .fc-day-mon.fc-daygrid-day::before {
   content: "";
   position: absolute;
   top: 0;
@@ -115,6 +97,36 @@
   height: 60%;
   background-color: var(--fc-bg-red);
   margin: auto;
+}
+.c-calendar-item--bar .fc .fc-day-sun.fc-daygrid-day,
+.c-calendar-item--bar .fc .fc-day-mon.fc-daygrid-day {
+  position: relative;
+}
+.c-calendar-item--bar .fc .fc-day-sun.fc-daygrid-day::before,
+.c-calendar-item--bar .fc .fc-day-mon.fc-daygrid-day::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 60%;
+  height: 60%;
+  background-color: var(--fc-bg-red);
+  margin: auto;
+}
+.fc .fc-day-today {
+  position: relative;
+}
+.fc .fc-day-today::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  display: block;
+  border: 1px solid var(--fc-today-border-color);
 }
 .fc .fc-day:not(.fc-day-other) .fc-bg-event {
   opacity: 1;
@@ -175,12 +187,16 @@
 }
 
 :root {
-  --font-family-base: "EB Garamond", serif;
+  --calendar-font-family-base: "EB Garamond", serif;
+  --calendar-shop-color: rgb(35, 24, 21);
+  --calendar-shop-font-family: copperplate-condensed, serif;
+  --calendar-shop-bgcolor: #bebb9b;
 }
 
 .c-calendar {
   position: relative;
   max-width: 800px;
+  color: var(--calendar-shop-color);
 }
 @media (min-width: 840px) {
   .c-calendar {
@@ -191,8 +207,20 @@
 @media (min-width: 840px) {
   .c-calendar {
     display: grid;
-    column-gap: 20px;
+    column-gap: 40px;
     grid-template-columns: 1fr 1fr;
+  }
+}
+.c-calendar-item {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 500px;
+}
+@media (min-width: 840px) {
+  .c-calendar-item {
+    margin-right: 0;
+    margin-left: 0;
+    max-width: inherit;
   }
 }
 .c-calendar-item + .c-calendar-item {
@@ -203,13 +231,24 @@
     margin-top: 0;
   }
 }
+.c-calendar-shop-type {
+  padding: 0.5rem;
+  text-align: center;
+  font-family: var(--calendar-shop-font-family);
+  font-size: 18px;
+  font-weight: 700;
+  background-color: var(--calendar-shop-bgcolor);
+}
+.c-calendar-shop-type::first-letter {
+  font-size: 24px;
+}
 .c-calendar-header {
   position: relative;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
-  font-family: var(--font-family-base);
+  font-family: var(--calendar-font-family-base);
 }
 .c-calendar-header-month {
   text-align: center;
@@ -226,7 +265,7 @@
   font-size: 18px;
 }
 .c-calendar-header-btn {
-  font-family: var(--font-family-base);
+  font-family: var(--calendar-font-family-base);
   font-size: 16px;
   padding: 0;
   display: flex;
