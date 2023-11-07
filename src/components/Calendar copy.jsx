@@ -7,7 +7,6 @@ const Calendar = () => {
   // const [events, setEvents] = useState([]);
   const [cafeEvents, setCafeEvents] = useState([]);
   const [barEvents, setBarEvents] = useState([]);
-  const [japaneseHolidays, setJapaneseHolidays] = useState([]);
   const calendarRef1 = useRef(null);
   const calendarRef2 = useRef(null);
   const [currentDate1, setCurrentDate1] = useState(new Date());
@@ -51,6 +50,30 @@ const Calendar = () => {
           // event.title.includes("Bar")
         );
 
+        // JavaScriptで指定した定休日を作成
+        const recurringHolidays = [];
+        const currentDate = new Date();
+        const endDate = new Date(
+          currentDate.getFullYear() + 1,
+          currentDate.getMonth(),
+          currentDate.getDate()
+        );
+
+        // 12か月分の定休日を生成
+        while (currentDate <= endDate) {
+          if (currentDate.getDay() === 0 || currentDate.getDay() === 1) {
+            // 日曜日と月曜日を定休日として指定
+            recurringHolidays.push({
+              // title: "定休日",
+              start: currentDate.toISOString().split("T")[0],
+              end: currentDate.toISOString().split("T")[0],
+              // backgroundColor: "#FFCCBC", // 定休日の背景色を設定
+              // display: "background",
+            });
+          }
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+
         // 日本の祝日データを取得
         const japaneseHolidaysResponse = await fetch(
           "https://holidays-jp.github.io/api/v1/date.json"
@@ -84,14 +107,14 @@ const Calendar = () => {
           })
           .flat();
 
-        setJapaneseHolidays(japaneseHolidays);
-
-        // const allEvents = [
-        //   // ...googleCalendarEvents,
-        //   ...cafeEvents,
-        //   ...barEvents,
-        //   ...japaneseHolidays,
-        // ];
+        // eslint-disable-next-line no-unused-vars
+        const allEvents = [
+          // ...googleCalendarEvents,
+          ...cafeEvents,
+          ...barEvents,
+          ...recurringHolidays,
+          ...japaneseHolidays,
+        ];
 
         // setEvents(allEvents);
         // setCafeEvents と setBarEvents でそれぞれのイベントをセット
@@ -177,7 +200,7 @@ const Calendar = () => {
             initialDate={currentDate1}
             plugins={[dayGridPlugin, googleCalendarPlugin]}
             initialView="dayGridMonth"
-            events={[...cafeEvents, ...japaneseHolidays]}
+            events={cafeEvents}
             headerToolbar={false}
             footerToolbar={{
               right: "noteButton",
@@ -241,7 +264,7 @@ const Calendar = () => {
             initialDate={currentDate2}
             plugins={[dayGridPlugin, googleCalendarPlugin]}
             initialView="dayGridMonth"
-            events={[...barEvents, ...japaneseHolidays]}
+            events={barEvents}
             headerToolbar={false}
             footerToolbar={{
               right: "noteButton",
