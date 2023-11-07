@@ -1,20 +1,31 @@
-@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
-@import url("https://use.typekit.net/tuy5qfe.css");
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
-.fc {
+:root {
   --fc-black: rgb(35, 24, 21);
   --fc-red: rgb(204, 0, 0);
+  --fc-bg-white: #fff;
   --fc-bg-blue: rgb(13, 60, 101);
   --fc-bg-red: rgb(255, 204, 188);
   --fc-bg-red-opacity: rgba(255, 204, 188, 0.3);
   --fc-today-border-color: rgb(255 220 40);
+  --calendar-font-family-base: "EB Garamond", serif;
+  --calendar-shop-color: rgb(35, 24, 21);
+  --calendar-shop-font-family: copperplate-condensed, serif;
+  --calendar-shop-bgcolor: #bebb9b;
+}
+
+.fc {
   margin-top: 10px;
   color: var(--fc-black);
   font-family: "EB Garamond", serif;
+}
+.fc .fc-view-harness {
+  background-color: var(--fc-bg-white);
+}
+.fc .fc-daygrid-body.fc-daygrid-body-unbalanced {
+  height: fit-content;
 }
 .fc .fc-scrollgrid-sync-table {
   font-size: 15px;
@@ -137,9 +148,11 @@
   right: 0;
   left: 0;
   bottom: 0;
-  width: fit-content;
-  height: fit-content;
   margin: auto;
+  width: fit-content;
+  min-width: 14.2857142857%;
+  height: fit-content;
+  min-height: 16.6666666667%;
 }
 .fc .fc-event-title {
   opacity: 0;
@@ -171,6 +184,7 @@
 .fc .fc-noteButton-button {
   position: relative;
   font-size: 10px;
+  font-weight: 700;
   font-family: sans-serif;
 }
 .fc .fc-noteButton-button {
@@ -186,17 +200,12 @@
   border: none;
 }
 
-:root {
-  --calendar-font-family-base: "EB Garamond", serif;
-  --calendar-shop-color: rgb(35, 24, 21);
-  --calendar-shop-font-family: copperplate-condensed, serif;
-  --calendar-shop-bgcolor: #bebb9b;
-}
-
 .c-calendar {
   position: relative;
+  padding: 10px;
   max-width: 800px;
   color: var(--calendar-shop-color);
+  background-color: var(--fc-bg-white);
 }
 @media (min-width: 840px) {
   .c-calendar {
@@ -232,6 +241,7 @@
   }
 }
 .c-calendar-shop-type {
+  margin: 0;
   padding: 0.5rem;
   text-align: center;
   font-family: var(--calendar-shop-font-family);
@@ -243,12 +253,18 @@
   font-size: 24px;
 }
 .c-calendar-header {
+  margin-top: 18px;
   position: relative;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
   font-family: var(--calendar-font-family-base);
+}
+@media (min-width: 840px) {
+  .c-calendar-header {
+    margin-top: 18px;
+  }
 }
 .c-calendar-header-month {
   text-align: center;
@@ -263,10 +279,11 @@
   width: fit-content;
   height: fit-content;
   font-size: 18px;
+  font-weight: 700;
 }
 .c-calendar-header-btn {
   font-family: var(--calendar-font-family-base);
-  font-size: 16px;
+  font-size: 14px;
   padding: 0;
   display: flex;
   align-items: center;
@@ -275,6 +292,11 @@
   cursor: pointer;
   outline: none;
   appearance: none;
+}
+@media (min-width: 840px) {
+  .c-calendar-header-btn {
+    font-size: 16px;
+  }
 }
 .c-calendar-header-prev-btn {
   text-align: left;
