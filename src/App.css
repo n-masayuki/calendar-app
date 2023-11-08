@@ -197,7 +197,6 @@
   pointer-events: none;
   box-shadow: none;
   cursor: none;
-  tabindex: -1;
 }
 .fc .fc-noteButton-button:focus {
   pointer-events: none;
