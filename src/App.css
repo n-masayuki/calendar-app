@@ -14,6 +14,7 @@
   --calendar-shop-color: rgb(35, 24, 21);
   --calendar-shop-font-family: copperplate-condensed, serif;
   --calendar-shop-bgcolor: #bebb9b;
+  --calendar-button-active-bgcolor: rgb(239, 239, 239);
 }
 
 .fc {
@@ -109,6 +110,9 @@
   background-color: var(--fc-bg-red);
   margin: auto;
 }
+.c-calendar-item--cafe .fc .fc-day-mon.fc-daygrid-day:has(.japanese-holiday)::before {
+  display: none;
+}
 .c-calendar-item--bar .fc .fc-day-sun.fc-daygrid-day,
 .c-calendar-item--bar .fc .fc-day-mon.fc-daygrid-day {
   position: relative;
@@ -122,9 +126,13 @@
   bottom: 0;
   left: 0;
   width: 60%;
-  height: 60%;
+  max-height: 60%;
+  aspect-ratio: 1/1;
   background-color: var(--fc-bg-red);
   margin: auto;
+}
+.c-calendar-item--bar .fc .fc-day-sun:has(+ .fc-day-mon .japanese-holiday)::before {
+  display: none;
 }
 .fc .fc-day-today {
   position: relative;
@@ -186,8 +194,12 @@
   font-size: 10px;
   font-weight: 700;
   font-family: sans-serif;
+  pointer-events: none;
+  box-shadow: none;
+  cursor: none;
+  tabindex: -1;
 }
-.fc .fc-noteButton-button {
+.fc .fc-noteButton-button:focus {
   pointer-events: none;
   box-shadow: none;
   cursor: none;
@@ -253,44 +265,36 @@
   font-size: 24px;
 }
 .c-calendar-header {
-  margin-top: 18px;
+  margin-top: 10px;
   position: relative;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
+  align-items: end;
   font-family: var(--calendar-font-family-base);
-}
-@media (min-width: 840px) {
-  .c-calendar-header {
-    margin-top: 18px;
-  }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 .c-calendar-header-month {
   text-align: center;
 }
 .c-calendar-header-month--current {
   margin: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  padding-bottom: 4px;
   width: fit-content;
   height: fit-content;
   font-size: 18px;
   font-weight: 700;
+  display: flex;
+  flex-direction: column;
 }
 .c-calendar-header-btn {
   font-family: var(--calendar-font-family-base);
   font-size: 14px;
+  line-height: 28px;
   padding: 0;
   display: flex;
   align-items: center;
   background-color: transparent;
   border: none;
   cursor: pointer;
-  outline: none;
   appearance: none;
 }
 @media (min-width: 840px) {
@@ -298,9 +302,16 @@
     font-size: 16px;
   }
 }
+.c-calendar-header-btn:active {
+  background-color: var(--calendar-button-active-bgcolor);
+}
 .c-calendar-header-prev-btn {
   text-align: left;
+  margin-right: auto;
+  padding-right: 1rem;
 }
 .c-calendar-header-next-btn {
   text-align: right;
+  margin-left: auto;
+  padding-left: 1rem;
 }/*# sourceMappingURL=App.css.map */
