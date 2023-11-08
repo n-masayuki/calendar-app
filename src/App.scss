@@ -20,6 +20,7 @@
   --calendar-shop-color: rgb(35, 24, 21);
   --calendar-shop-font-family: copperplate-condensed, serif;
   --calendar-shop-bgcolor: #bebb9b;
+  --calendar-button-active-bgcolor: rgb(239, 239, 239);
 }
 
 .fc {
@@ -181,7 +182,7 @@
     }
   }
 
-  // Cafeの定休日：月曜休
+  // Cafeの定休日：月曜休 ※月曜祝日の場合は火曜休
   .c-calendar-item--cafe & {
     .fc-day-mon {
       &.fc-daygrid-day {
@@ -199,8 +200,16 @@
           background-color: var(--fc-bg-red);
           margin: auto;
         }
+
+        // 月曜祝日の場合は通常営業
+        &:has(.japanese-holiday) {
+          &::before {
+            display: none;
+          }
+        }
       }
     }
+    // .fc-day-mon
   }
 
   // Barの定休日：日・月曜休 ※月曜祝日の場合は火曜休
@@ -218,7 +227,8 @@
           bottom: 0;
           left: 0;
           width: 60%;
-          height: 60%;
+          max-height: 60%;
+          aspect-ratio: 1/1;
           background-color: var(--fc-bg-red);
           margin: auto;
         }
@@ -230,6 +240,14 @@
       // &.fc-day-past {
       //   background-color: var(--fc-bg-red);
       // }
+    }
+    // .fc-day-sun, .fc-day-mon
+
+    // 月曜日が祝日の場合は日曜日は通常営業
+    .fc-day-sun:has(+ .fc-day-mon .japanese-holiday) {
+      &::before {
+        display: none;
+      }
     }
   }
 
@@ -309,16 +327,23 @@
     font-size: 10px;
     font-weight: 700;
     font-family: sans-serif;
+    pointer-events: none;
+    box-shadow: none;
+    cursor: none;
+    tabindex: -1;
+
+    &:focus {
+      pointer-events: none;
+      box-shadow: none;
+      cursor: none;
+    }
   }
 
   // .fc-prevMonth-button,
   // .fc-nextMonth-button,
   // .fc-shopNameButton-button,
-  .fc-noteButton-button {
-    pointer-events: none;
-    box-shadow: none;
-    cursor: none;
-  }
+  // .fc-noteButton-button {
+  // }
 }
 // .fc
 
@@ -386,32 +411,38 @@
   }
 
   &-header {
-    margin-top: 18px;
+    margin-top: 10px;
     position: relative;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
+    // display: flex;
+    // flex-wrap: nowrap;
+    // justify-content: space-between;
+    align-items: end;
+    // align-items: center;
     font-family: var(--calendar-font-family-base);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 
-    @media (min-width: 840px) {
-      margin-top: 18px;
-    }
+    // @media (min-width: 840px) {
+    //   margin-top: 10px;
+    // }
 
     &-month {
       text-align: center;
 
       &--current {
         margin: auto;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        padding-bottom: 4px;
+        // position: absolute;
+        // top: 0;
+        // // bottom: 0;
+        // left: 0;
+        // right: 0;
         width: fit-content;
         height: fit-content;
         font-size: 18px;
         font-weight: 700;
+        display: flex;
+        flex-direction: column;
       }
     }
     // &-month
@@ -420,17 +451,23 @@
       font-family: var(--calendar-font-family-base);
       font-size: 14px;
       // font-size: 16px;
+      line-height: calc(24px + 4px);
+      // line-height: 24px;
       padding: 0;
       display: flex;
       align-items: center;
       background-color: transparent;
       border: none;
       cursor: pointer;
-      outline: none;
+      // outline: none;
       appearance: none;
 
       @media (min-width: 840px) {
         font-size: 16px;
+      }
+
+      &:active {
+        background-color: var(--calendar-button-active-bgcolor);
       }
     }
 
@@ -440,10 +477,14 @@
 
     &-prev-btn {
       text-align: left;
+      margin-right: auto;
+      padding-right: 1rem;
     }
 
     &-next-btn {
       text-align: right;
+      margin-left: auto;
+      padding-left: 1rem;
     }
   }
   // &-header

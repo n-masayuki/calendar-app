@@ -73,7 +73,7 @@ const Calendar = () => {
             };
 
             const substituteHolidayEvent = {
-              title: "振替休日",
+              title: "祝日の翌日",
               start: nextDay.toISOString().split("T")[0],
               end: nextDay.toISOString().split("T")[0],
               allDay: true,
@@ -150,8 +150,12 @@ const Calendar = () => {
             <p className="c-calendar-header-month c-calendar-header-month--current">
               <span>
                 {new Date(currentDate1).toLocaleDateString("en-US", {
-                  month: "long",
                   year: "numeric",
+                })}
+              </span>
+              <span>
+                {new Date(currentDate1).toLocaleDateString("en-US", {
+                  month: "long",
                 })}
               </span>
             </p>
@@ -214,8 +218,12 @@ const Calendar = () => {
             <p className="c-calendar-header-month c-calendar-header-month--current">
               <span>
                 {new Date(currentDate2).toLocaleDateString("en-US", {
-                  month: "long",
                   year: "numeric",
+                })}
+              </span>
+              <span>
+                {new Date(currentDate2).toLocaleDateString("en-US", {
+                  month: "long",
                 })}
               </span>
             </p>
