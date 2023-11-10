@@ -145,7 +145,7 @@
   }
 
   .fc-daygrid-day {
-    &:has(.temporary-closed) {
+    &:has(.temporary-event) {
       position: relative;
 
       &::before {
@@ -201,16 +201,35 @@
           margin: auto;
         }
 
-        // 月曜祝日の場合は通常営業
+        // 月曜の祝日は通常営業
         &:has(.japanese-holiday) {
           &::before {
-            display: none;
+            // display: none;
+            background-color: transparent;
+          }
+        }
+
+        // 月曜の祝日に臨時"休業"する場合
+        &:has([data-event="Cafe臨時休業日"]) {
+          &::before {
+            background-color: var(--fc-bg-red);
           }
         }
       }
     }
     // .fc-day-mon
   }
+  // .c-calendar-item--cafe &
+
+  // Cafe：定休日に臨時"営業"する場合
+  .c-calendar-item--cafe & {
+    .fc-daygrid-day:has([data-event="Cafe臨時営業日"]) {
+      &::before {
+        background-color: transparent;
+      }
+    }
+  }
+  // .c-calendar-item--cafe &
 
   // Barの定休日：日・月曜休 ※月曜祝日の場合は火曜休
   .c-calendar-item--bar & {
@@ -232,24 +251,36 @@
           background-color: var(--fc-bg-red);
           margin: auto;
         }
-
-        // background-color: var(--fc-bg-red);
-        // background-color: var(--fc-bg-red-opacity);
       }
-
-      // &.fc-day-past {
-      //   background-color: var(--fc-bg-red);
-      // }
     }
     // .fc-day-sun, .fc-day-mon
 
     // 月曜日が祝日の場合は日曜日は通常営業
     .fc-day-sun:has(+ .fc-day-mon .japanese-holiday) {
       &::before {
-        display: none;
+        // display: none;
+        background-color: transparent;
+      }
+    }
+
+    // 月曜日が祝日の場合は日曜日は通常営業だが臨時"休業"する場合
+    .fc-day-sun:has([data-event="Bar臨時休業日"]) {
+      &::before {
+        background-color: var(--fc-bg-red) !important;
       }
     }
   }
+  // .c-calendar-item--bar &
+
+  // Bar：定休日に臨時"営業"する場合
+  .c-calendar-item--bar & {
+    .fc-daygrid-day:has([data-event="Bar臨時営業日"]) {
+      &::before {
+        background-color: transparent;
+      }
+    }
+  }
+  // .c-calendar-item--bar &
 
   .fc-day-today {
     position: relative;
@@ -484,6 +515,10 @@
       text-align: right;
       margin-left: auto;
       padding-left: 1rem;
+
+      &.is-none {
+        display: none;
+      }
     }
   }
   // &-header
