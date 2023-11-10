@@ -12,118 +12,168 @@ const Calendar = () => {
   const calendarRef2 = useRef(null);
   const [currentDate1, setCurrentDate1] = useState(new Date());
   const [currentDate2, setCurrentDate2] = useState(new Date());
+  const [showNextButton1, setShowNextButton1] = useState(true);
+  const [showNextButton2, setShowNextButton2] = useState(true);
+
+  const fetchGoogleCalendarEvents = async () => {
+    try {
+      const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+      const calendarId = process.env.REACT_APP_GOOGLE_CALENDAR_ID;
+
+      if (!apiKey || !calendarId) {
+        console.error("API key or calendar ID not provided in .env file");
+        return;
+      }
+
+      // Googleカレンダーから臨時休業のイベントを取得
+      const googleCalendarResponse = await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`
+      );
+
+      if (!googleCalendarResponse.ok) {
+        throw new Error("Failed to fetch Google Calendar events");
+      }
+
+      const googleCalendarData = await googleCalendarResponse.json();
+      const googleCalendarEvents = googleCalendarData.items.map((event) => ({
+        title: event.summary,
+        start: event.start.dateTime || event.start.date,
+        end: event.end.dateTime || event.end.date,
+        classNames: "temporary-event",
+      }));
+
+      // GoogleカレンダーのイベントをCafeとBarに分ける
+      const cafeEvents = googleCalendarEvents.filter(
+        (event) => event.title.toLowerCase().includes("cafe") // 大文字小文字を区別しない
+      );
+      const barEvents = googleCalendarEvents.filter(
+        (event) => event.title.toLowerCase().includes("bar") // 大文字小文字を区別しない
+      );
+
+      // 日本の祝日データを取得
+      const japaneseHolidaysResponse = await fetch(
+        "https://holidays-jp.github.io/api/v1/date.json"
+      );
+      const holidaysData = await japaneseHolidaysResponse.json();
+
+      // Japanese holidays processing
+      const japaneseHolidays = Object.keys(holidaysData)
+        .map((date) => {
+          const holidayDate = new Date(date);
+          const nextDay = new Date(holidayDate);
+          nextDay.setDate(holidayDate.getDate() + 1);
+
+          const holidayEvent = {
+            title: holidaysData[date],
+            start: date,
+            end: date,
+            allDay: true,
+            classNames: "japanese-holiday",
+          };
+
+          const substituteHolidayEvent = {
+            title: "祝日の翌日",
+            start: nextDay.toISOString().split("T")[0],
+            end: nextDay.toISOString().split("T")[0],
+            allDay: true,
+            classNames: "substitute-holiday",
+          };
+
+          return [holidayEvent, substituteHolidayEvent];
+        })
+        .flat();
+
+      setJapaneseHolidays(japaneseHolidays);
+      setCafeEvents(cafeEvents);
+      setBarEvents(barEvents);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchGoogleCalendarEvents = async () => {
-      try {
-        const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
-        const calendarId = process.env.REACT_APP_GOOGLE_CALENDAR_ID;
-
-        if (!apiKey || !calendarId) {
-          console.error("API key or calendar ID not provided in .env file");
-          return;
-        }
-
-        // Googleカレンダーから臨時休業のイベントを取得
-        const googleCalendarResponse = await fetch(
-          `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`
-        );
-
-        if (!googleCalendarResponse.ok) {
-          throw new Error("Failed to fetch Google Calendar events");
-        }
-
-        const googleCalendarData = await googleCalendarResponse.json();
-        const googleCalendarEvents = googleCalendarData.items.map((event) => ({
-          title: event.summary,
-          start: event.start.dateTime || event.start.date,
-          end: event.end.dateTime || event.end.date,
-          classNames: "temporary-closed", // クラスを追加
-        }));
-
-        // GoogleカレンダーのイベントをCafeとBarに分ける
-        const cafeEvents = googleCalendarEvents.filter(
-          (event) => event.title.toLowerCase().includes("cafe") // 大文字小文字を区別しない
-          // event.title.includes("Cafe")
-        );
-        const barEvents = googleCalendarEvents.filter(
-          (event) => event.title.toLowerCase().includes("bar") // 大文字小文字を区別しない
-          // event.title.includes("Bar")
-        );
-
-        // 日本の祝日データを取得
-        const japaneseHolidaysResponse = await fetch(
-          "https://holidays-jp.github.io/api/v1/date.json"
-        );
-        const holidaysData = await japaneseHolidaysResponse.json();
-
-        // Japanese holidays processing
-        const japaneseHolidays = Object.keys(holidaysData)
-          .map((date) => {
-            const holidayDate = new Date(date);
-            const nextDay = new Date(holidayDate);
-            nextDay.setDate(holidayDate.getDate() + 1);
-
-            const holidayEvent = {
-              title: holidaysData[date],
-              start: date,
-              end: date,
-              allDay: true,
-              classNames: "japanese-holiday", // クラスを追加
-            };
-
-            const substituteHolidayEvent = {
-              title: "祝日の翌日",
-              start: nextDay.toISOString().split("T")[0],
-              end: nextDay.toISOString().split("T")[0],
-              allDay: true,
-              classNames: "substitute-holiday", // クラスを追加
-            };
-
-            return [holidayEvent, substituteHolidayEvent];
-          })
-          .flat();
-
-        setJapaneseHolidays(japaneseHolidays);
-
-        // const allEvents = [
-        //   // ...googleCalendarEvents,
-        //   ...cafeEvents,
-        //   ...barEvents,
-        //   ...japaneseHolidays,
-        // ];
-
-        // setEvents(allEvents);
-        // setCafeEvents と setBarEvents でそれぞれのイベントをセット
-        setCafeEvents(cafeEvents);
-        setBarEvents(barEvents);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchGoogleCalendarEvents();
   }, []); // 初回のみ実行
 
-  // 月の変更時にカレンダーコンポーネントを操作
-  const handlePrevMonthClick = (calendarRef, setCurrentDate) => {
-    const newDate = new Date(
-      calendarRef.current.getApi().getDate().getFullYear(),
-      calendarRef.current.getApi().getDate().getMonth() - 1,
-      1
-    );
-    setCurrentDate(newDate);
-    calendarRef.current.getApi().gotoDate(newDate);
-  };
+  // 無限カレンダー
+  // const handleMonthChange = (calendarRef, setCurrentDate, delta) => {
+  //   const newDate = new Date(
+  //     calendarRef.current.getApi().getDate().getFullYear(),
+  //     calendarRef.current.getApi().getDate().getMonth() + delta,
+  //     1
+  //   );
+  //   setCurrentDate(newDate);
+  //   calendarRef.current.getApi().gotoDate(newDate);
+  // };
 
-  const handleNextMonthClick = (calendarRef, setCurrentDate) => {
+  // // カレント月の1ヶ月先まで表示する
+  // const handleMonthChange = (calendarRef, setCurrentDate, delta) => {
+  //   const currentView = calendarRef.current.getApi().view;
+  //   const currentDateInView = currentView.currentStart;
+  //   const newDate = new Date(
+  //     currentDateInView.getFullYear(),
+  //     currentDateInView.getMonth() + delta,
+  //     1
+  //   );
+
+  //   // 未来の表示を1ヶ月までに制限
+  //   const maxFutureDate = new Date(
+  //     new Date().getFullYear(),
+  //     new Date().getMonth() + 1,
+  //     1
+  //   );
+  //   if (newDate > maxFutureDate) {
+  //     setCurrentDate(maxFutureDate);
+  //     calendarRef.current.getApi().gotoDate(maxFutureDate);
+  //   } else {
+  //     setCurrentDate(newDate);
+  //     calendarRef.current.getApi().gotoDate(newDate);
+  //   }
+  // };
+
+  // カレント月の1ヶ月先まで表示する
+  const handleMonthChange = (
+    calendarRef,
+    setCurrentDate,
+    delta,
+    calendarIndex
+  ) => {
+    const currentView = calendarRef.current.getApi().view;
+    const currentDateInView = currentView.currentStart;
     const newDate = new Date(
-      calendarRef.current.getApi().getDate().getFullYear(),
-      calendarRef.current.getApi().getDate().getMonth() + 1,
+      currentDateInView.getFullYear(),
+      currentDateInView.getMonth() + delta,
       1
     );
-    setCurrentDate(newDate);
-    calendarRef.current.getApi().gotoDate(newDate);
+
+    // 未来の表示を1ヶ月までに制限
+    const maxFutureDate = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() + 1,
+      1
+    );
+
+    if (newDate > maxFutureDate) {
+      setCurrentDate(maxFutureDate);
+      calendarRef.current.getApi().gotoDate(maxFutureDate);
+
+      // カレンダーごとのボタン表示状態を更新
+      if (calendarIndex === 0) {
+        setShowNextButton1(false);
+      } else if (calendarIndex === 1) {
+        setShowNextButton2(false);
+      }
+    } else {
+      setCurrentDate(newDate);
+      calendarRef.current.getApi().gotoDate(newDate);
+
+      // カレンダーごとのボタン表示状態を更新
+      if (calendarIndex === 0) {
+        setShowNextButton1(newDate < maxFutureDate);
+      } else if (calendarIndex === 1) {
+        setShowNextButton2(newDate < maxFutureDate);
+      }
+    }
   };
 
   return (
@@ -135,7 +185,7 @@ const Calendar = () => {
             <button
               className="c-calendar-header-btn c-calendar-header-prev-btn"
               onClick={() =>
-                handlePrevMonthClick(calendarRef1, setCurrentDate1)
+                handleMonthChange(calendarRef1, setCurrentDate1, -1, 0)
               }
             >
               <span className="c-calendar-icon material-symbols-outlined">
@@ -160,9 +210,11 @@ const Calendar = () => {
               </span>
             </p>
             <button
-              className="c-calendar-header-btn c-calendar-header-next-btn"
+              className={`c-calendar-header-btn c-calendar-header-next-btn ${
+                !showNextButton1 ? "is-none" : "is-show"
+              }`}
               onClick={() =>
-                handleNextMonthClick(calendarRef1, setCurrentDate1)
+                handleMonthChange(calendarRef1, setCurrentDate1, 1, 0)
               }
             >
               {new Date(
@@ -194,6 +246,12 @@ const Calendar = () => {
             datesSet={(info) => {
               setCurrentDate1(info.view.currentStart);
             }}
+            eventContent={(arg) => {
+              const eventTitle = arg.event.title;
+              return {
+                html: `<div class="fc-event-title fc-sticky" data-event="${eventTitle}">${eventTitle}</div>`,
+              };
+            }}
           />
         </div>
 
@@ -203,7 +261,7 @@ const Calendar = () => {
             <button
               className="c-calendar-header-btn c-calendar-header-prev-btn"
               onClick={() =>
-                handlePrevMonthClick(calendarRef2, setCurrentDate2)
+                handleMonthChange(calendarRef2, setCurrentDate2, -1, 1)
               }
             >
               <span className="c-calendar-icon material-symbols-outlined">
@@ -228,9 +286,11 @@ const Calendar = () => {
               </span>
             </p>
             <button
-              className="c-calendar-header-btn c-calendar-header-next-btn"
+              className={`c-calendar-header-btn c-calendar-header-next-btn ${
+                !showNextButton2 ? "is-none" : "is-show"
+              }`}
               onClick={() =>
-                handleNextMonthClick(calendarRef2, setCurrentDate2)
+                handleMonthChange(calendarRef2, setCurrentDate2, 1, 1)
               }
             >
               {new Date(
@@ -261,6 +321,12 @@ const Calendar = () => {
             }}
             datesSet={(info) => {
               setCurrentDate2(info.view.currentStart);
+            }}
+            eventContent={(arg) => {
+              const eventTitle = arg.event.title;
+              return {
+                html: `<div class="fc-event-title fc-sticky" data-event="${eventTitle}">${eventTitle}</div>`,
+              };
             }}
           />
         </div>

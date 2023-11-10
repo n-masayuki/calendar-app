@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
@@ -65,10 +66,10 @@
 .fc .fc-h-event {
   background-color: transparent;
 }
-.fc .fc-daygrid-day:has(.temporary-closed) {
+.fc .fc-daygrid-day:has(.temporary-event) {
   position: relative;
 }
-.fc .fc-daygrid-day:has(.temporary-closed)::before {
+.fc .fc-daygrid-day:has(.temporary-event)::before {
   content: "";
   position: absolute;
   top: 0;
@@ -111,7 +112,13 @@
   margin: auto;
 }
 .c-calendar-item--cafe .fc .fc-day-mon.fc-daygrid-day:has(.japanese-holiday)::before {
-  display: none;
+  background-color: transparent;
+}
+.c-calendar-item--cafe .fc .fc-day-mon.fc-daygrid-day:has([data-event=Cafe臨時休業日])::before {
+  background-color: var(--fc-bg-red);
+}
+.c-calendar-item--cafe .fc .fc-daygrid-day:has([data-event=Cafe臨時営業日])::before {
+  background-color: transparent;
 }
 .c-calendar-item--bar .fc .fc-day-sun.fc-daygrid-day,
 .c-calendar-item--bar .fc .fc-day-mon.fc-daygrid-day {
@@ -132,7 +139,13 @@
   margin: auto;
 }
 .c-calendar-item--bar .fc .fc-day-sun:has(+ .fc-day-mon .japanese-holiday)::before {
-  display: none;
+  background-color: transparent;
+}
+.c-calendar-item--bar .fc .fc-day-sun:has([data-event=Bar臨時休業日])::before {
+  background-color: var(--fc-bg-red) !important;
+}
+.c-calendar-item--bar .fc .fc-daygrid-day:has([data-event=Bar臨時営業日])::before {
+  background-color: transparent;
 }
 .fc .fc-day-today {
   position: relative;
@@ -313,4 +326,7 @@
   text-align: right;
   margin-left: auto;
   padding-left: 1rem;
+}
+.c-calendar-header-next-btn.is-none {
+  display: none;
 }/*# sourceMappingURL=App.css.map */
