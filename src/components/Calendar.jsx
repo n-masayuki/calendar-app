@@ -4,7 +4,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 
 const Calendar = () => {
-  // const [events, setEvents] = useState([]);
   const [cafeEvents, setCafeEvents] = useState([]);
   const [barEvents, setBarEvents] = useState([]);
   const [japaneseHolidays, setJapaneseHolidays] = useState([]);
@@ -95,42 +94,6 @@ const Calendar = () => {
     fetchGoogleCalendarEvents();
   }, []); // 初回のみ実行
 
-  // 無限カレンダー
-  // const handleMonthChange = (calendarRef, setCurrentDate, delta) => {
-  //   const newDate = new Date(
-  //     calendarRef.current.getApi().getDate().getFullYear(),
-  //     calendarRef.current.getApi().getDate().getMonth() + delta,
-  //     1
-  //   );
-  //   setCurrentDate(newDate);
-  //   calendarRef.current.getApi().gotoDate(newDate);
-  // };
-
-  // // カレント月の1ヶ月先まで表示する
-  // const handleMonthChange = (calendarRef, setCurrentDate, delta) => {
-  //   const currentView = calendarRef.current.getApi().view;
-  //   const currentDateInView = currentView.currentStart;
-  //   const newDate = new Date(
-  //     currentDateInView.getFullYear(),
-  //     currentDateInView.getMonth() + delta,
-  //     1
-  //   );
-
-  //   // 未来の表示を1ヶ月までに制限
-  //   const maxFutureDate = new Date(
-  //     new Date().getFullYear(),
-  //     new Date().getMonth() + 1,
-  //     1
-  //   );
-  //   if (newDate > maxFutureDate) {
-  //     setCurrentDate(maxFutureDate);
-  //     calendarRef.current.getApi().gotoDate(maxFutureDate);
-  //   } else {
-  //     setCurrentDate(newDate);
-  //     calendarRef.current.getApi().gotoDate(newDate);
-  //   }
-  // };
-
   // カレント月の1ヶ月先まで表示する
   const handleMonthChange = (
     calendarRef,
@@ -188,9 +151,7 @@ const Calendar = () => {
                 handleMonthChange(calendarRef1, setCurrentDate1, -1, 0)
               }
             >
-              <span className="c-calendar-icon material-symbols-outlined">
-                chevron_left
-              </span>{" "}
+              <span className="c-calendar-icon c-calendar-icon--prev"></span>{" "}
               {new Date(
                 currentDate1.getFullYear(),
                 currentDate1.getMonth() - 1,
@@ -222,9 +183,7 @@ const Calendar = () => {
                 currentDate1.getMonth() + 1,
                 1
               ).toLocaleDateString("en-US", { month: "long" })}{" "}
-              <span className="c-calendar-icon material-symbols-outlined">
-                chevron_right
-              </span>
+              <span className="c-calendar-icon c-calendar-icon--next"></span>
             </button>
           </div>
 
@@ -264,9 +223,7 @@ const Calendar = () => {
                 handleMonthChange(calendarRef2, setCurrentDate2, -1, 1)
               }
             >
-              <span className="c-calendar-icon material-symbols-outlined">
-                chevron_left
-              </span>{" "}
+              <span className="c-calendar-icon c-calendar-icon--prev"></span>{" "}
               {new Date(
                 currentDate2.getFullYear(),
                 currentDate2.getMonth() - 1,
@@ -298,9 +255,7 @@ const Calendar = () => {
                 currentDate2.getMonth() + 1,
                 1
               ).toLocaleDateString("en-US", { month: "long" })}{" "}
-              <span className="c-calendar-icon material-symbols-outlined">
-                chevron_right
-              </span>
+              <span className="c-calendar-icon c-calendar-icon--next"></span>
             </button>
           </div>
 

@@ -1,8 +1,4 @@
 @charset "UTF-8";
-.material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-}
-
 :root {
   --fc-black: rgb(35, 24, 21);
   --fc-red: rgb(204, 0, 0);
@@ -16,6 +12,18 @@
   --calendar-shop-font-family: copperplate-condensed, serif;
   --calendar-shop-bgcolor: #bebb9b;
   --calendar-button-active-bgcolor: rgb(239, 239, 239);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 .fc {
@@ -329,4 +337,37 @@
 }
 .c-calendar-header-next-btn.is-none {
   display: none;
+}
+.c-calendar-icon {
+  position: relative;
+  display: block;
+  margin-right: 0;
+  margin-left: auto;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: none;
+}
+.c-calendar-icon::before, .c-calendar-icon::after {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 12px;
+  width: 11px;
+  height: 2px;
+  background-color: var(--calendar-shop-color);
+}
+.c-calendar-icon::before {
+  left: 0;
+  transform: rotate(45deg);
+}
+.c-calendar-icon::after {
+  right: 0;
+  transform: rotate(-45deg);
+}
+.c-calendar-icon--prev {
+  transform: rotate(90deg);
+}
+.c-calendar-icon--next {
+  transform: rotate(-90deg);
 }/*# sourceMappingURL=App.css.map */
