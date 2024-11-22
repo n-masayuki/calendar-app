@@ -156,7 +156,7 @@ const Calendar = () => {
                 currentDate1.getFullYear(),
                 currentDate1.getMonth() - 1,
                 1
-              ).toLocaleDateString("en-US", { month: "long" })}
+              ).toLocaleDateString("jp", { month: "long" })}
             </button>
             <p className="c-calendar-header-month c-calendar-header-month--current">
               <span>
@@ -165,7 +165,7 @@ const Calendar = () => {
                 })}
               </span>
               <span>
-                {new Date(currentDate1).toLocaleDateString("en-US", {
+                {new Date(currentDate1).toLocaleDateString("jp", {
                   month: "long",
                 })}
               </span>
@@ -182,7 +182,7 @@ const Calendar = () => {
                 currentDate1.getFullYear(),
                 currentDate1.getMonth() + 1,
                 1
-              ).toLocaleDateString("en-US", { month: "long" })}{" "}
+              ).toLocaleDateString("jp", { month: "long" })}{" "}
               <span className="c-calendar-icon c-calendar-icon--next"></span>
             </button>
           </div>
@@ -228,7 +228,7 @@ const Calendar = () => {
                 currentDate2.getFullYear(),
                 currentDate2.getMonth() - 1,
                 1
-              ).toLocaleDateString("en-US", { month: "long" })}
+              ).toLocaleDateString("jp", { month: "long" })}
             </button>
             <p className="c-calendar-header-month c-calendar-header-month--current">
               <span>
@@ -237,7 +237,7 @@ const Calendar = () => {
                 })}
               </span>
               <span>
-                {new Date(currentDate2).toLocaleDateString("en-US", {
+                {new Date(currentDate2).toLocaleDateString("jp", {
                   month: "long",
                 })}
               </span>
@@ -254,7 +254,7 @@ const Calendar = () => {
                 currentDate2.getFullYear(),
                 currentDate2.getMonth() + 1,
                 1
-              ).toLocaleDateString("en-US", { month: "long" })}{" "}
+              ).toLocaleDateString("jp", { month: "long" })}{" "}
               <span className="c-calendar-icon c-calendar-icon--next"></span>
             </button>
           </div>
