@@ -190,9 +190,6 @@
 .fc .fc-daygrid-day:has(.japanese-holiday) .fc-daygrid-day-number {
   color: var(--fc-red);
 }
-.fc .fc-daygrid-day:not(.fc-day-sun):not(.fc-day-mon):has(.japanese-holiday)::before {
-  display: none;
-}
 .fc .fc-toolbar.fc-footer-toolbar {
   margin-top: 10px;
 }
