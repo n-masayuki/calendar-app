@@ -36,17 +36,23 @@ const Calendar = () => {
       const googleCalendarData = await googleCalendarResponse.json();
       const googleCalendarEvents = googleCalendarData.items.map((event) => ({
         title: event.summary,
-        start: event.start.dateTime || event.start.date,
-        end: event.end.dateTime || event.end.date,
+        start: event.start?.dateTime || event.start?.date || "",
+        end: event.end?.dateTime || event.end?.date || "",
         classNames: "temporary-event",
       }));
+      // const googleCalendarEvents = googleCalendarData.items.map((event) => ({
+      //   title: event.summary,
+      //   start: event.start.dateTime || event.start.date,
+      //   end: event.end.dateTime || event.end.date,
+      //   classNames: "temporary-event",
+      // }));
 
       // GoogleカレンダーのイベントをCafeとBarに分ける
       const cafeEvents = googleCalendarEvents.filter(
-        (event) => event.title.toLowerCase().includes("cafe") // 大文字小文字を区別しない
+        (event) => event.title && event.title.toLowerCase().includes("cafe") // 大文字小文字を区別しない
       );
       const barEvents = googleCalendarEvents.filter(
-        (event) => event.title.toLowerCase().includes("bar") // 大文字小文字を区別しない
+        (event) => event.title && event.title.toLowerCase().includes("bar") // 大文字小文字を区別しない
       );
 
       // 日本の祝日データを取得

@@ -311,7 +311,7 @@
 }
 .c-calendar-header-btn {
   font-family: sans-serif;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 28px;
   padding: 0;
   display: flex;
@@ -323,7 +323,7 @@
 }
 @media (min-width: 840px) {
   .c-calendar-header-btn {
-    font-size: 24px;
+    font-size: 20px;
   }
 }
 .c-calendar-header-btn:active {
