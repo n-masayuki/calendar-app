@@ -154,7 +154,6 @@
   .fc-daygrid-day {
     &:has(.temporary-event) {
       position: relative;
-
       &::before {
         content: "";
         position: absolute;
@@ -173,7 +172,6 @@
   .fc-daygrid-day.fc-day-tue {
     &:has(.substitute-holiday) {
       position: relative;
-
       &::before {
         content: "";
         position: absolute;
@@ -194,7 +192,6 @@
     .fc-day-mon {
       &.fc-daygrid-day {
         position: relative;
-
         &::before {
           content: "";
           position: absolute;
@@ -244,7 +241,6 @@
     .fc-day-mon {
       &.fc-daygrid-day {
         position: relative;
-
         &::before {
           content: "";
           position: absolute;
@@ -291,7 +287,6 @@
 
   .fc-day-today {
     position: relative;
-
     &::after {
       content: "";
       position: absolute;
@@ -332,11 +327,11 @@
     }
   }
 
-  .fc-daygrid-day:not(.fc-day-sun):not(.fc-day-mon):has(.japanese-holiday) {
-    &::before {
-      display: none;
-    }
-  }
+  // .fc-daygrid-day:not(.fc-day-sun):not(.fc-day-mon):has(.japanese-holiday) {
+  //   &::before {
+  //     display: none;
+  //   }
+  // }
 
   .fc-toolbar {
     &.fc-footer-toolbar {
