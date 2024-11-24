@@ -493,7 +493,7 @@
     &-btn {
       font-family: sans-serif;
       // font-family: var(--calendar-font-family-base);
-      font-size: 22px;
+      font-size: 18px;
       // font-size: 14px;
       // font-size: 16px;
       line-height: calc(24px + 4px);
@@ -508,7 +508,7 @@
       appearance: none;
 
       @media (min-width: 840px) {
-        font-size: 24px;
+        font-size: 20px;
         // font-size: 16px;
       }
 
