@@ -113,7 +113,6 @@
   //   // width: 78px;
   //   padding-right: 0;
   //   padding-left: 0;
-
   //   &::first-letter {
   //     font-size: 24px;
   //   }
@@ -204,7 +203,6 @@
           background-color: var(--fc-bg-red);
           margin: auto;
         }
-
         // 月曜の祝日は通常営業
         &:has(.japanese-holiday) {
           &::before {
@@ -212,7 +210,6 @@
             background-color: transparent;
           }
         }
-
         // 月曜の祝日に臨時"休業"する場合
         &:has([data-event="Cafe臨時休業日"]) {
           &::before {
@@ -221,9 +218,7 @@
         }
       }
     }
-    // .fc-day-mon
   }
-  // .c-calendar-item--cafe &
 
   // Cafe：定休日に臨時"営業"する場合
   .c-calendar-item--cafe & {
@@ -233,7 +228,6 @@
       }
     }
   }
-  // .c-calendar-item--cafe &
 
   // Barの定休日：日・月曜休 ※月曜祝日の場合は火曜休
   .c-calendar-item--bar & {
@@ -256,7 +250,6 @@
         }
       }
     }
-    // .fc-day-sun, .fc-day-mon
 
     // 月曜日が祝日の場合は日曜日は通常営業
     .fc-day-sun:has(+ .fc-day-mon .japanese-holiday) {
@@ -273,7 +266,6 @@
       }
     }
   }
-  // .c-calendar-item--bar &
 
   // Bar：定休日に臨時"営業"する場合
   .c-calendar-item--bar & {
@@ -283,7 +275,6 @@
       }
     }
   }
-  // .c-calendar-item--bar &
 
   .fc-day-today {
     position: relative;
@@ -343,7 +334,6 @@
     display: flex;
     align-items: center;
     column-gap: 5px;
-
     &::before {
       content: "";
       display: block;
@@ -363,7 +353,6 @@
     pointer-events: none;
     box-shadow: none;
     cursor: none;
-
     &:focus {
       pointer-events: none;
       box-shadow: none;
@@ -396,38 +385,31 @@
   max-width: 800px;
   color: var(--calendar-shop-color);
   background-color: var(--fc-bg-white);
-
   @media (min-width: 840px) {
     margin-right: auto;
     margin-left: auto;
   }
-
   @media (min-width: 840px) {
     display: grid;
     column-gap: 40px;
     grid-template-columns: 1fr 1fr;
   }
-
   &-item {
     margin-right: auto;
     margin-left: auto;
     max-width: 500px;
-
     @media (min-width: 840px) {
       margin-right: 0;
       margin-left: 0;
       max-width: inherit;
     }
-
     + .c-calendar-item {
       margin-top: 40px;
-
       @media (min-width: 840px) {
         margin-top: 0;
       }
     }
   }
-
   &-shop-type {
     margin: 0;
     padding: 0.5rem;
@@ -436,12 +418,10 @@
     font-size: 18px;
     font-weight: 700;
     background-color: var(--calendar-shop-bgcolor);
-
     &::first-letter {
       font-size: 24px;
     }
   }
-
   &-header {
     margin-top: 10px;
     position: relative;
@@ -453,14 +433,11 @@
     font-family: var(--calendar-font-family-base);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-
     // @media (min-width: 840px) {
     //   margin-top: 10px;
     // }
-
     &-month {
       text-align: center;
-
       &--current {
         margin: auto;
         padding-bottom: 4px;
@@ -483,8 +460,6 @@
         }
       }
     }
-    // &-month
-
     &-btn {
       font-family: sans-serif;
       // font-family: var(--calendar-font-family-base);
@@ -501,39 +476,31 @@
       cursor: pointer;
       // outline: none;
       appearance: none;
-
       @media (min-width: 840px) {
         font-size: 20px;
         // font-size: 16px;
       }
-
       &:active {
         background-color: var(--calendar-button-active-bgcolor);
       }
     }
-
     // &-prev-btn,
     // &-next-btn {
     // }
-
     &-prev-btn {
       text-align: left;
       margin-right: auto;
       padding-right: 1rem;
     }
-
     &-next-btn {
       text-align: right;
       margin-left: auto;
       padding-left: 1rem;
-
       &.is-none {
         display: none;
       }
     }
   }
-  // &-header
-
   &-icon {
     position: relative;
     display: block;
@@ -545,7 +512,6 @@
     flex-shrink: 0;
     transition: none;
     // transform-origin: center 60%;
-
     &::before,
     &::after {
       content: "";
@@ -556,25 +522,20 @@
       height: 2px;
       background-color: var(--calendar-shop-color);
     }
-
     &::before {
       left: 0;
       transform: rotate(45deg);
     }
-
     &::after {
       right: 0;
       transform: rotate(-45deg);
     }
-
     &--prev {
       transform: rotate(90deg);
     }
-
     &--next {
       transform: rotate(-90deg);
     }
   }
-  // &-icon
 }
 // .c-calendar
