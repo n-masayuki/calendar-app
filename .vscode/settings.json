@@ -1,4 +1,5 @@
 {
+  "window.zoomLevel": -0.7,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "liveSassCompile.settings.autoprefix": [],
