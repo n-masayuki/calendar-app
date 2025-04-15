@@ -371,4 +371,67 @@
 }
 .c-calendar-icon--next {
   transform: rotate(-90deg);
+}
+
+.c-calendar-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  padding: 2rem;
+  text-align: center;
+  font-family: var(--calendar-font-family-base);
+  color: var(--calendar-shop-color);
+}
+.c-calendar-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(190, 187, 155, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--calendar-shop-bgcolor);
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+.c-calendar-loading p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.c-calendar-error {
+  padding: 1.5rem;
+  margin: 1rem auto;
+  max-width: 800px;
+  border: 1px solid var(--fc-red);
+  background-color: rgba(255, 204, 188, 0.2);
+  border-radius: 4px;
+  font-family: var(--calendar-font-family-base);
+  color: var(--fc-red);
+  text-align: center;
+}
+.c-calendar-error p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 16px;
+}
+.c-calendar-error-retry-btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--fc-bg-white);
+  border: 1px solid var(--fc-red);
+  color: var(--fc-red);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--calendar-font-family-base);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.c-calendar-error-retry-btn:hover {
+  background-color: var(--fc-red);
+  color: var(--fc-bg-white);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }/*# sourceMappingURL=App.css.map */

@@ -7,6 +7,8 @@ const Calendar = () => {
   const [cafeEvents, setCafeEvents] = useState([]);
   const [barEvents, setBarEvents] = useState([]);
   const [japaneseHolidays, setJapaneseHolidays] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // ローディング状態の追加
+  const [error, setError] = useState(null); // エラー状態の追加
   const calendarRef1 = useRef(null);
   const calendarRef2 = useRef(null);
   const [currentDate1, setCurrentDate1] = useState(new Date());
@@ -16,12 +18,14 @@ const Calendar = () => {
 
   const fetchGoogleCalendarEvents = async () => {
     try {
+      setIsLoading(true); // データ取得開始時にローディング状態をtrueに設定
+      setError(null); // エラー状態をリセット
+
       const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
       const calendarId = process.env.REACT_APP_GOOGLE_CALENDAR_ID;
 
       if (!apiKey || !calendarId) {
-        console.error("API key or calendar ID not provided in .env file");
-        return;
+        throw new Error("API key or calendar ID not provided in .env file");
       }
 
       // Googleカレンダーから臨時休業のイベントを取得
@@ -40,12 +44,6 @@ const Calendar = () => {
         end: event.end?.dateTime || event.end?.date || "",
         classNames: "temporary-event",
       }));
-      // const googleCalendarEvents = googleCalendarData.items.map((event) => ({
-      //   title: event.summary,
-      //   start: event.start.dateTime || event.start.date,
-      //   end: event.end.dateTime || event.end.date,
-      //   classNames: "temporary-event",
-      // }));
 
       // GoogleカレンダーのイベントをCafeとBarに分ける
       const cafeEvents = googleCalendarEvents.filter(
@@ -59,6 +57,11 @@ const Calendar = () => {
       const japaneseHolidaysResponse = await fetch(
         "https://holidays-jp.github.io/api/v1/date.json"
       );
+
+      if (!japaneseHolidaysResponse.ok) {
+        throw new Error("Failed to fetch Japanese holidays");
+      }
+
       const holidaysData = await japaneseHolidaysResponse.json();
 
       // Japanese holidays processing
@@ -91,8 +94,11 @@ const Calendar = () => {
       setJapaneseHolidays(japaneseHolidays);
       setCafeEvents(cafeEvents);
       setBarEvents(barEvents);
+      setIsLoading(false); // データ取得完了時にローディング状態をfalseに設定
     } catch (error) {
       console.error("Error fetching data:", error);
+      setError(error.message); // エラーメッセージを設定
+      setIsLoading(false); // エラー発生時もローディング状態を終了
     }
   };
 
@@ -144,6 +150,31 @@ const Calendar = () => {
       }
     }
   };
+
+  // ローディング中の表示
+  if (isLoading) {
+    return (
+      <div className="c-calendar-loading">
+        <div className="c-calendar-loading-spinner"></div>
+        <p>カレンダーデータを読み込んでいます...</p>
+      </div>
+    );
+  }
+
+  // エラー時の表示
+  if (error) {
+    return (
+      <div className="c-calendar-error">
+        <p>エラーが発生しました: {error}</p>
+        <button
+          className="c-calendar-error-retry-btn"
+          onClick={() => fetchGoogleCalendarEvents()}
+        >
+          再試行する
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
