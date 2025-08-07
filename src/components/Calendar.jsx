@@ -53,11 +53,12 @@ const Calendar = () => {
         (event) => event.title && event.title.toLowerCase().includes("bar") // 大文字小文字を区別しない
       );
 
-      // 日本の祝日データを取得
+      // 日本の祝日APIを使用して祝日データを取得
       const japaneseHolidaysResponse = await fetch(
         "https://holidays-jp.github.io/api/v1/date.json"
       );
 
+      // APIのレスポンスが正常でない場合はエラーをスロー
       if (!japaneseHolidaysResponse.ok) {
         throw new Error("Failed to fetch Japanese holidays");
       }
@@ -124,8 +125,7 @@ const Calendar = () => {
     // 未来の表示を1ヶ月までに制限
     const maxFutureDate = new Date(
       new Date().getFullYear(),
-      new Date().getMonth() + 1,
-      1
+      new Date().getMonth() + 1
     );
 
     if (newDate > maxFutureDate) {
