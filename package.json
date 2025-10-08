@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "Reactで作成した静的なカレンダー",
   "main": "index.js",
+  "packageManager": "npm@11.6.1",
+  "volta": {
+    "node": "22.14.0",
+    "npm": "11.6.1"
+  },
   "private": true,
   "dependencies": {
     "@fullcalendar/daygrid": "^6.1.15",

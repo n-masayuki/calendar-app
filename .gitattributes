@@ -1,0 +1,32 @@
+# テキストファイルは自動で改行を LF に統一
+* text=auto eol=lf
+# OS 依存しやすいファイル（bat, sh）を個別指定
+*.sh text eol=lf
+*.bat text eol=crlf
+# 画像やフォントなどバイナリ扱い（差分を取らない）
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff binary
+*.ttf binary
+*.psd filter=lfs diff=lfs merge=lfs -text
+# Markdown, JSON, JS はテキスト扱い（diff を見やすく）
+*.md text diff=markdown
+*.json text
+*.js text
+*.jsx text
+*.ts text
+*.tsx text
+*.css text
+*.scss text
+*.html text
+*.php text
+*.yml text
+*.yaml text
+# OS・IDE 特有ファイルは無視
+.DS_Store binary
+Thumbs.db binary
+*.heic filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+*.ai filter=lfs diff=lfs merge=lfs -text
