@@ -9,12 +9,12 @@ const Calendar = () => {
   const [japaneseHolidays, setJapaneseHolidays] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // ローディング状態の追加
   const [error, setError] = useState(null); // エラー状態の追加
-  const calendarRef1 = useRef(null);
-  const calendarRef2 = useRef(null);
-  const [currentDate1, setCurrentDate1] = useState(new Date());
-  const [currentDate2, setCurrentDate2] = useState(new Date());
-  const [showNextButton1, setShowNextButton1] = useState(true);
-  const [showNextButton2, setShowNextButton2] = useState(true);
+  const calendarRef1 = useRef(null); // Cafeカレンダー用のref
+  const calendarRef2 = useRef(null); // Barカレンダー用のref
+  const [currentDate1, setCurrentDate1] = useState(new Date()); // Cafeカレンダー用で、初期値は今日の日付
+  const [currentDate2, setCurrentDate2] = useState(new Date()); // Barカレンダー用で、初期値は今日の日付
+  const [showNextButton1, setShowNextButton1] = useState(true); // Cafeカレンダー用で、次へボタンの表示状態
+  const [showNextButton2, setShowNextButton2] = useState(true); // Barカレンダー用で、次へボタンの表示状態
 
   const fetchGoogleCalendarEvents = async () => {
     try {
@@ -28,28 +28,142 @@ const Calendar = () => {
         throw new Error("API key or calendar ID not provided in .env file");
       }
 
-      // Googleカレンダーから臨時休業のイベントを取得
-      const googleCalendarResponse = await fetch(
-        `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`
+      const calendarBaseUrl = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(
+        calendarId
+      )}/events`;
+
+      const now = new Date();
+
+      // 過去のイベント取得範囲を2年に拡大
+      const twoYearsAgo = new Date(now.getFullYear() - 2, now.getMonth(), 1);
+      twoYearsAgo.setHours(0, 0, 0, 0);
+
+      // 未来のイベントを1年後まで拡大
+      const oneYearLater = new Date(
+        now.getFullYear() + 1,
+        now.getMonth(),
+        now.getDate()
       );
 
-      if (!googleCalendarResponse.ok) {
-        throw new Error("Failed to fetch Google Calendar events");
+      let googleCalendarEvents = [];
+
+      // 1. まず今日から未来のイベントを取得（新しいイベントを優先）
+      const futureParams = new URLSearchParams({
+        key: apiKey,
+        singleEvents: "true",
+        orderBy: "startTime",
+        maxResults: "1000", // 未来1年分に対応
+        timeMin: now.toISOString(), // 今日から
+        timeMax: oneYearLater.toISOString(),
+      });
+
+      const futureResponse = await fetch(
+        `${calendarBaseUrl}?${futureParams.toString()}`
+      );
+
+      if (futureResponse.ok) {
+        const futureData = await futureResponse.json();
+        const futureEvents = (futureData.items || []).map((event) => ({
+          title: event.summary,
+          start: event.start?.dateTime || event.start?.date || "",
+          end: event.end?.dateTime || event.end?.date || "",
+          classNames: "temporary-event",
+          id: event.id, // 重複チェック用のID
+        }));
+        googleCalendarEvents = [...googleCalendarEvents, ...futureEvents];
       }
 
-      const googleCalendarData = await googleCalendarResponse.json();
-      const googleCalendarEvents = googleCalendarData.items.map((event) => ({
-        title: event.summary,
-        start: event.start?.dateTime || event.start?.date || "",
-        end: event.end?.dateTime || event.end?.date || "",
-        classNames: "temporary-event",
-      }));
+      // 2. 過去のイベントを取得（2年分）
+      const pastParams = new URLSearchParams({
+        key: apiKey,
+        singleEvents: "true",
+        orderBy: "startTime",
+        maxResults: "1500", // 過去2年分に対応
+        timeMin: twoYearsAgo.toISOString(),
+        timeMax: now.toISOString(), // 今日まで
+      });
+
+      let pageToken = null;
+      do {
+        const params = new URLSearchParams(pastParams);
+
+        if (pageToken) {
+          params.set("pageToken", pageToken);
+        }
+
+        const googleCalendarResponse = await fetch(
+          `${calendarBaseUrl}?${params.toString()}`
+        );
+
+        if (!googleCalendarResponse.ok) {
+          console.warn("Failed to fetch past Google Calendar events");
+          break; // 過去のイベント取得に失敗しても、未来のイベントがあれば継続
+        }
+
+        const googleCalendarData = await googleCalendarResponse.json();
+
+        const fetchedEvents = (googleCalendarData.items || []).map((event) => ({
+          title: event.summary,
+          start: event.start?.dateTime || event.start?.date || "",
+          end: event.end?.dateTime || event.end?.date || "",
+          classNames: "temporary-event",
+          id: event.id, // 重複チェック用のID
+        }));
+
+        googleCalendarEvents = [...googleCalendarEvents, ...fetchedEvents];
+        pageToken = googleCalendarData.nextPageToken || null;
+
+        // 過去のイベントは最大2000件で打ち切り（2年分に対応）
+        if (googleCalendarEvents.length >= 2500) {
+          console.log("過去のイベント取得を制限により停止");
+          break;
+        }
+      } while (pageToken);
+
+      // 重複を除去（IDが同じイベントを削除）
+      const uniqueEvents = googleCalendarEvents.filter(
+        (event, index, self) =>
+          index === self.findIndex((e) => e.id === event.id)
+      );
+
+      // デバッグ用ログ出力
+      console.log("=== GoogleカレンダーAPI取得結果 ===");
+      console.log(
+        "取得期間: ",
+        twoYearsAgo.toISOString().split("T")[0],
+        " 〜 ",
+        oneYearLater.toISOString().split("T")[0]
+      );
+      console.log("Total events fetched:", googleCalendarEvents.length);
+      console.log("Unique events after deduplication:", uniqueEvents.length);
+
+      // 時期別の取得状況
+      const pastEvents = uniqueEvents.filter(
+        (event) => new Date(event.start) < new Date().setHours(0, 0, 0, 0)
+      );
+      const futureEvents = uniqueEvents.filter(
+        (event) => new Date(event.start) >= new Date().setHours(0, 0, 0, 0)
+      );
+      console.log("過去のイベント:", pastEvents.length, "件");
+      console.log("今日以降のイベント:", futureEvents.length, "件");
+
+      // 最新のイベントを5件表示
+      const sortedEvents = uniqueEvents.sort(
+        (a, b) => new Date(b.start) - new Date(a.start)
+      );
+      console.log(
+        "Latest 5 events:",
+        sortedEvents
+          .slice(0, 5)
+          .map((e) => ({ title: e.title, start: e.start }))
+      );
+      console.log("=================================");
 
       // GoogleカレンダーのイベントをCafeとBarに分ける
-      const cafeEvents = googleCalendarEvents.filter(
+      const cafeEvents = uniqueEvents.filter(
         (event) => event.title && event.title.toLowerCase().includes("cafe") // 大文字小文字を区別しない
       );
-      const barEvents = googleCalendarEvents.filter(
+      const barEvents = uniqueEvents.filter(
         (event) => event.title && event.title.toLowerCase().includes("bar") // 大文字小文字を区別しない
       );
 
@@ -64,7 +178,7 @@ const Calendar = () => {
 
       const holidaysData = await japaneseHolidaysResponse.json();
 
-      // Japanese holidays processing
+      //　日本の祝日とその翌日をイベント形式に変換
       const japaneseHolidays = Object.keys(holidaysData)
         .map((date) => {
           const holidayDate = new Date(date);
@@ -123,8 +237,8 @@ const Calendar = () => {
 
     // 未来の表示を1ヶ月までに制限
     const maxFutureDate = new Date(
-      new Date().getFullYear(),
-      new Date().getMonth() + 1,
+      new Date().getFullYear(), // 今年
+      new Date().getMonth() + 1, // 来月
       1
     );
 
