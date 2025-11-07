@@ -4,6 +4,14 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 
 const Calendar = () => {
+  // ========================================
+  // 表示期間の設定（イレギュラー対応用）
+  // ========================================
+  // true: 当月までのみ表示（イレギュラー時）
+  // false: 翌月まで表示（通常時）
+  const SHOW_ONLY_CURRENT_MONTH = false;
+  // ========================================
+
   const [cafeEvents, setCafeEvents] = useState([]);
   const [barEvents, setBarEvents] = useState([]);
   const [japaneseHolidays, setJapaneseHolidays] = useState([]);
@@ -13,8 +21,12 @@ const Calendar = () => {
   const calendarRef2 = useRef(null); // Barカレンダー用のref
   const [currentDate1, setCurrentDate1] = useState(new Date()); // Cafeカレンダー用で、初期値は今日の日付
   const [currentDate2, setCurrentDate2] = useState(new Date()); // Barカレンダー用で、初期値は今日の日付
-  const [showNextButton1, setShowNextButton1] = useState(true); // Cafeカレンダー用で、次へボタンの表示状態
-  const [showNextButton2, setShowNextButton2] = useState(true); // Barカレンダー用で、次へボタンの表示状態
+  const [showNextButton1, setShowNextButton1] = useState(
+    !SHOW_ONLY_CURRENT_MONTH
+  ); // Cafeカレンダー用で、次へボタンの表示状態
+  const [showNextButton2, setShowNextButton2] = useState(
+    !SHOW_ONLY_CURRENT_MONTH
+  ); // Barカレンダー用で、次へボタンの表示状態
 
   const fetchGoogleCalendarEvents = async () => {
     try {
@@ -35,12 +47,12 @@ const Calendar = () => {
       const now = new Date();
 
       // 過去のイベント取得範囲を2年に拡大
-      const twoYearsAgo = new Date(now.getFullYear() - 2, now.getMonth(), 1);
+      const twoYearsAgo = new Date(now.getFullYear() - 2, now.getMonth(), 1); // 2年前の月初め
       twoYearsAgo.setHours(0, 0, 0, 0);
 
       // 未来のイベントを1年後まで拡大
       const oneYearLater = new Date(
-        now.getFullYear() + 1,
+        now.getFullYear() + 1, // 1年後
         now.getMonth(),
         now.getDate()
       );
@@ -220,7 +232,7 @@ const Calendar = () => {
     fetchGoogleCalendarEvents();
   }, []); // 初回のみ実行
 
-  // カレント月の1ヶ月先まで表示する
+  // カレンダーの月を変更する
   const handleMonthChange = (
     calendarRef,
     setCurrentDate,
@@ -235,18 +247,22 @@ const Calendar = () => {
       1
     );
 
-    // 未来の表示を1ヶ月までに制限
-    const maxFutureDate = new Date(
-      new Date().getFullYear(), // 今年
-      new Date().getMonth() + 1, // 来月
-      1
-    );
+    // 今日の年月を取得
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth();
+
+    // 表示期間の上限を設定（設定により切り替え）
+    const maxFutureDate = SHOW_ONLY_CURRENT_MONTH
+      ? new Date(currentYear, currentMonth, 1) // イレギュラー時: 当月まで
+      : new Date(currentYear, currentMonth + 1, 1); // 通常時: 翌月まで
 
     if (newDate > maxFutureDate) {
+      // 上限を超える場合は上限の月を表示
       setCurrentDate(maxFutureDate);
       calendarRef.current.getApi().gotoDate(maxFutureDate);
 
-      // カレンダーごとのボタン表示状態を更新
+      // 上限に達したので次月ボタンは非表示
       if (calendarIndex === 0) {
         setShowNextButton1(false);
       } else if (calendarIndex === 1) {
@@ -256,11 +272,25 @@ const Calendar = () => {
       setCurrentDate(newDate);
       calendarRef.current.getApi().gotoDate(newDate);
 
-      // カレンダーごとのボタン表示状態を更新
-      if (calendarIndex === 0) {
-        setShowNextButton1(newDate < maxFutureDate);
-      } else if (calendarIndex === 1) {
-        setShowNextButton2(newDate < maxFutureDate);
+      // ボタン表示状態を更新
+      if (SHOW_ONLY_CURRENT_MONTH) {
+        // イレギュラー時: 当月かどうかで判定
+        const isCurrentMonth =
+          newDate.getFullYear() === currentYear &&
+          newDate.getMonth() === currentMonth;
+
+        if (calendarIndex === 0) {
+          setShowNextButton1(!isCurrentMonth);
+        } else if (calendarIndex === 1) {
+          setShowNextButton2(!isCurrentMonth);
+        }
+      } else {
+        // 通常時: 上限未満なら常に表示
+        if (calendarIndex === 0) {
+          setShowNextButton1(newDate < maxFutureDate);
+        } else if (calendarIndex === 1) {
+          setShowNextButton2(newDate < maxFutureDate);
+        }
       }
     }
   };
