@@ -3,31 +3,31 @@
   "version": "0.1.0",
   "description": "Reactで作成した静的なカレンダー",
   "main": "index.js",
-  "packageManager": "npm@11.6.1",
+  "packageManager": "npm@11.6.2",
   "volta": {
     "node": "22.14.0",
-    "npm": "11.6.1"
+    "npm": "11.6.2"
   },
   "private": true,
   "dependencies": {
-    "@fullcalendar/daygrid": "^6.1.15",
-    "@fullcalendar/google-calendar": "^6.1.15",
-    "@fullcalendar/react": "^6.1.15",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.0.1",
-    "@testing-library/user-event": "^14.5.2",
-    "caniuse-lite": "^1.0.30001684",
-    "dotenv": "^16.4.5",
-    "fullcalendar": "^6.1.15",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "@fullcalendar/daygrid": "^6.1.19",
+    "@fullcalendar/google-calendar": "^6.1.19",
+    "@fullcalendar/react": "^6.1.19",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "caniuse-lite": "^1.0.30001755",
+    "dotenv": "^17.2.3",
+    "fullcalendar": "^6.1.19",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^4.2.4"
+    "web-vitals": "^5.1.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-scripts": "5.0.1"
   },
   "scripts": {
