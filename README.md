@@ -1,40 +1,67 @@
-# Getting Started with Create React App
+# Cafe & Bar 営業日カレンダー
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+カフェとバーの営業日・定休日・臨時休業日をGoogleカレンダーで管理し、FullCalendarで月ごとに表示するReactコンポーネントです。Googleカレンダーを更新することで、カレンダー表示側にも予定を反映できます。
 
-## Available Scripts
+このリポジトリは、NDA対象のWebサイトからカレンダー機能を切り出して紹介するものです。公開できないサイト名、URL、実際の店舗情報、画面キャプチャ、カレンダーデータは含めていません。
 
-In the project directory, you can run:
+## 主な機能
 
-### `npm start`
+- Googleカレンダーの予定を取得し、タイトルに含まれる `cafe` / `bar` をもとに2つの月間カレンダーへ振り分け
+- 定休日や臨時休業日をGoogleカレンダー側で管理
+- 月送り、データ読み込み中の表示、取得失敗時の再試行
+- 日本の祝日データを取得してカレンダーに表示
+- 過去約2年から未来約1年までの予定を取得
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 使用技術
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React
+- FullCalendar 6
 
-### `npm test`
+# Cafe & Bar 営業日カレンダー
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+カフェとバーの営業日・定休日・臨時休業日をGoogleカレンダーで管理し、FullCalendarで月ごとに表示するReactコンポーネントです。Googleカレンダーを更新することで、カレンダー表示側にも予定を反映できます。
 
-### `npm run build`
+このリポジトリは、NDA対象のWebサイトからカレンダー機能を切り出して紹介するものです。公開できないサイト名、URL、実際の店舗情報、画面キャプチャ、カレンダーデータは含めていません。
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 主な機能
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Googleカレンダーの予定を取得し、タイトルに含まれる `cafe` / `bar` をもとに2つの月間カレンダーへ振り分け
+- 定休日や臨時休業日をGoogleカレンダー側で管理
+- 月送り、データ読み込み中の表示、取得失敗時の再試行
+- 日本の祝日データを取得してカレンダーに表示
+- 過去約2年から未来約1年までの予定を取得
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 使用技術
 
-### `npm run eject`
+- React
+- FullCalendar 6
+- Google Calendar API
+- [日本の祝日データ](https://holidays-jp.github.io/)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## ローカルでの起動
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Node.js 22.14.0 と npm 11.6.2 を使用しています。
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm ci
+npm start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Google Calendar APIを使う場合は、プロジェクト直下に `.env.local` を作成し、次の変数を設定してください。
+
+```env
+REACT_APP_GOOGLE_API_KEY=your_api_key
+REACT_APP_GOOGLE_CALENDAR_ID=your_public_calendar_id
+```
+
+このカレンダー機能はブラウザーからGoogle Calendar APIへアクセスします。そのためAPIキーはビルド後のブラウザーにも渡り、秘密情報としては扱えません。公開カレンダーを使い、Google Cloud側でAPIキーのHTTPリファラーと利用APIを制限してください。実際のAPIキーやカレンダーIDは公開リポジトリへ登録しないでください。
+
+## 現在の状態
+
+カレンダーUIの実装は [`src/components/Calendar.jsx`](src/components/Calendar.jsx) にあります。現在の [`src/App.js`](src/App.js) はCreate React Appの初期画面で、このコンポーネントを単体アプリに組み込んでいません。そのため、`npm start` で起動する画面と、ここで紹介しているカレンダーUIは現時点では一致しません。
+
+カレンダーを表示するには、ホストアプリから `Calendar` コンポーネントを読み込み、必要なスタイルとGoogle Calendar APIの設定を用意してください。
+
+## 公開範囲
+
+このコードは汎用化した機能の紹介を目的としています。NDA対象のサイトや実データを推測・特定できる情報は掲載していません。
