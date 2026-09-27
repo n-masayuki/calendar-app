@@ -29,7 +29,10 @@
 .fc {
   margin-top: 10px;
   color: var(--fc-black);
-  font-family: "EB Garamond", serif;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
 }
 .fc .fc-view-harness {
   background-color: var(--fc-bg-white);
@@ -235,6 +238,10 @@
   max-width: 800px;
   color: var(--calendar-shop-color);
   background-color: var(--fc-bg-white);
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
 }
 @media (min-width: 840px) {
   .c-calendar {
