@@ -9,6 +9,7 @@
     "npm": "11.6.2"
   },
   "private": true,
+  "license": "UNLICENSED",
   "dependencies": {
     "@fullcalendar/daygrid": "^6.1.19",
     "@fullcalendar/google-calendar": "^6.1.19",
