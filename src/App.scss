@@ -414,7 +414,7 @@
     margin: 0;
     padding: 0.5rem;
     text-align: center;
-    font-family: var(--calendar-shop-font-family);
+    // font-family: var(--calendar-shop-font-family);
     font-size: 18px;
     font-weight: 700;
     background-color: var(--calendar-shop-bgcolor);
@@ -430,7 +430,7 @@
     // justify-content: space-between;
     align-items: end;
     // align-items: center;
-    font-family: var(--calendar-font-family-base);
+    // font-family: var(--calendar-font-family-base);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     // @media (min-width: 840px) {
@@ -548,7 +548,7 @@
   min-height: 200px;
   padding: 2rem;
   text-align: center;
-  font-family: var(--calendar-font-family-base);
+  // font-family: var(--calendar-font-family-base);
   color: var(--calendar-shop-color);
   &-spinner {
     width: 40px;

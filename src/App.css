@@ -273,7 +273,6 @@
   margin: 0;
   padding: 0.5rem;
   text-align: center;
-  font-family: var(--calendar-shop-font-family);
   font-size: 18px;
   font-weight: 700;
   background-color: var(--calendar-shop-bgcolor);
@@ -285,7 +284,6 @@
   margin-top: 10px;
   position: relative;
   align-items: end;
-  font-family: var(--calendar-font-family-base);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
@@ -381,7 +379,6 @@
   min-height: 200px;
   padding: 2rem;
   text-align: center;
-  font-family: var(--calendar-font-family-base);
   color: var(--calendar-shop-color);
 }
 .c-calendar-loading-spinner {
