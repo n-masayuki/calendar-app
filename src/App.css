@@ -269,7 +269,7 @@
   }
 }
 .c-calendar-item + .c-calendar-item {
-  margin-top: 40px;
+  margin-top: 80px;
 }
 @media (min-width: 840px) {
   .c-calendar-item + .c-calendar-item {
@@ -277,18 +277,20 @@
   }
 }
 .c-calendar-shop-type {
-  margin: 0;
-  padding: 0.5rem;
+  margin: 0 auto;
+  padding: 0.25rem 1.5rem;
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  background-color: var(--calendar-shop-bgcolor);
+  width: fit-content;
+  border-radius: 50vw;
+  background-color: #e8e8e8;
 }
 .c-calendar-shop-type::first-letter {
   font-size: 24px;
 }
 .c-calendar-header {
-  margin-top: 10px;
+  margin-top: 1.5rem;
   position: relative;
   align-items: end;
   display: grid;
