@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "営業日カレンダー",
+  "name": "営業日カレンダー",
   "icons": [
     {
       "src": "favicon.ico",

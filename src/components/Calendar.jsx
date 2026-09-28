@@ -33,8 +33,8 @@ const Calendar = () => {
       setIsLoading(true); // データ取得開始時にローディング状態をtrueに設定
       setError(null); // エラー状態をリセット
 
-      const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
-      const calendarId = process.env.REACT_APP_GOOGLE_CALENDAR_ID;
+      const apiKey = import.meta.env.REACT_APP_GOOGLE_API_KEY;
+      const calendarId = import.meta.env.REACT_APP_GOOGLE_CALENDAR_ID;
 
       if (!apiKey || !calendarId) {
         throw new Error("API key or calendar ID not provided in .env file");
