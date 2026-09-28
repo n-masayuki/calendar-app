@@ -43,4 +43,4 @@ REACT_APP_GOOGLE_CALENDAR_ID=your_public_calendar_id
 
 ## ライセンス
 
-このリポジトリ独自のコードは All rights reserved です。明示的な許諾なく、再利用・改変・再配布することはできません。依存ライブラリにはそれぞれのライセンスが適用されます。FullCalendarとReactはMIT Licenseで提供されています。ビルド成果物を配布する場合は、含まれる依存ライブラリの著作権表示とライセンス文も含めてください。
+All rights reserved. 詳細は [LICENSE.md](LICENSE.md) を参照してください。
